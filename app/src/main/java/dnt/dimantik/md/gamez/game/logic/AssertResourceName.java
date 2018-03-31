@@ -60,6 +60,7 @@ public class AssertResourceName {
 
     public static final String LOCATION_NAME = "";
 
+
     public static final String PLACE_GAS_STATION = "place/gas_station.jpg";
     public static final String PLACE_HOSPITAL = "place/hospital.jpg";
     public static final String PLACE_MARKET = "place/market.jpg";
