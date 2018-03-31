@@ -1,0 +1,28 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/bag_capacity"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        tools:text="Рюкзак(4/10)"
+        android:textColor="#000"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:background="@color/fill_grey"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bag_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="3dp"/>
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dnt.dimantik.md.gamez.controllers.place.fragment.ActionFragment">
+
+   <Button
+       android:id="@+id/find_resources"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Искать ресурсы"/>
+
+</FrameLayout>
