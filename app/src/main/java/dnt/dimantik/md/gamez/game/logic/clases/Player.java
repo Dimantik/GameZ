@@ -8,6 +8,7 @@ import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.FeetClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.HeadClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.LegsClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Transport;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Weapon;
 
@@ -15,7 +16,7 @@ import dnt.dimantik.md.gamez.game.logic.clases.resource.Weapon;
  * Created by dimantik on 10/19/17.
  */
 
-public class Player implements BDInterface, EquipmentOwner {
+public class Player implements BDInterface, Owner {
 
     private String mName;
     private UUID mUUID;
@@ -349,99 +350,85 @@ public class Player implements BDInterface, EquipmentOwner {
         BDHelper.addPlayer(this);
     }
 
+
+    public final static String FIRST_SLOT = "FIRST";
+    public final static String SECOND_SLOT = "SECOND";
+
     @Override
-    public void deleteCurrentHeadClothes(HeadClothes headClothes) {
-        if (headClothes == mCurrentHeadClothes){
+    public boolean putResource(Resource resource, String flag) {
+        if (!isPossibleToPut(resource, flag)){
+            return false;
+        }
+
+        if (resource instanceof HeadClothes){
+            setCurrentHeadClothes((HeadClothes) resource, true);
+        } else if (resource instanceof BodyClothes) {
+            setCurrentBodyClothes((BodyClothes) resource, true);
+        } else if (resource instanceof LegsClothes) {
+            setCurrentLegsClothes((LegsClothes) resource, true);
+        } else if (resource instanceof FeetClothes) {
+            setCurrentFeetClothes((FeetClothes) resource, true);
+        } else if (resource instanceof Weapon) {
+            if (flag == null || (!flag.equals(FIRST_SLOT) && !flag.equals(SECOND_SLOT))){
+                return false;
+            }
+
+            switch (flag){
+                case FIRST_SLOT:
+                    setCurrentFirstWeapon((Weapon) resource, true);
+                    break;
+                case SECOND_SLOT:
+                    setCurrentSecondWeapon((Weapon) resource, true);
+                    break;
+            }
+
+        } else if (resource instanceof Bag) {
+            setCurrentBag((Bag) resource, true);
+        } else if (resource instanceof Transport) {
+            setCurrentTransport((Transport) resource, true);
+        } else {
+            return false;
+        }
+
+        update();
+
+        return true;
+    }
+
+    @Override
+    public boolean isPossibleToPut(Resource resource, String flag) {
+        if (resource == null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void deleteResource(Resource resource) {
+        if (resource == null){
+            return;
+        }
+
+        if (resource instanceof HeadClothes){
             setCurrentHeadClothes(null, true);
-            countProtection();
-        }
-    }
-
-    @Override
-    public void deleteCurrentBodyClothes(BodyClothes bodyClothes) {
-        if (bodyClothes == mCurrentBodyClothes){
+        } else if (resource instanceof BodyClothes) {
             setCurrentBodyClothes(null, true);
-            countProtection();
-        }
-    }
-
-    @Override
-    public void deleteCurrentLegsClothes(LegsClothes legsClothes) {
-        if (legsClothes == mCurrentLegsClothes){
+        } else if (resource instanceof LegsClothes) {
             setCurrentLegsClothes(null, true);
-            countProtection();
-        }
-    }
-
-    @Override
-    public void deleteCurrentFeetClothes(FeetClothes feetClothes) {
-        if (feetClothes == mCurrentFeetClothes){
+        } else if (resource instanceof FeetClothes) {
             setCurrentFeetClothes(null, true);
-            countProtection();
+        } else if (resource instanceof Weapon) {
+            if (mCurrentFirstWeapon == resource){
+                setCurrentFirstWeapon(null, true);
+            } else if (mCurrentSecondWeapon == resource) {
+                setCurrentSecondWeapon(null, true);
+            }
+        } else if (resource instanceof Bag) {
+            setCurrentBag((Bag) resource, true);
+        } else if (resource instanceof Transport) {
+            setCurrentTransport((Transport) resource, true);
         }
-    }
 
-    @Override
-    public void deleteCurrentWeapon(Weapon weapon) {
-        if (mCurrentFirstWeapon == weapon){
-            setCurrentFirstWeapon(null, true);
-        } else if (mCurrentSecondWeapon == weapon) {
-            setCurrentSecondWeapon(null, true);
-        }
-    }
-
-    @Override
-    public void deleteCurrentBag(Bag bag) {
-        setCurrentBag(null, true);
-    }
-
-    @Override
-    public void deleteCurrentTransport(Transport transport) {
-        setCurrentTransport(null, true);
-    }
-
-    @Override
-    public void addCurrentHeadClothes(HeadClothes headClothes) {
-        setCurrentHeadClothes(headClothes, true);
-    }
-
-    @Override
-    public void addCurrentBodyClothes(BodyClothes bodyClothes) {
-        setCurrentBodyClothes(bodyClothes, true);
-    }
-
-    @Override
-    public void addCurrentLegsClothes(LegsClothes legsClothes) {
-        setCurrentLegsClothes(legsClothes, true);
-    }
-
-    @Override
-    public void addCurrentFeetClothes(FeetClothes feetClothes) {
-        setCurrentFeetClothes(feetClothes, true);
-    }
-
-    public final static int FIRST_SLOT = 1;
-    public final static int SECOND_SLOT = 2;
-
-    @Override
-    public void addCurrentWeapon(Weapon weapon, int slot) {
-        switch (slot){
-            case FIRST_SLOT:
-                setCurrentFirstWeapon(weapon, true);
-                break;
-            case SECOND_SLOT:
-                setCurrentSecondWeapon(weapon, true);
-                break;
-        }
-    }
-
-    @Override
-    public void addCurrentBag(Bag bag) {
-        setCurrentBag(bag, true);
-    }
-
-    @Override
-    public void addCurrentTransport(Transport transport) {
-        setCurrentTransport(transport, true);
+        update();
     }
 }

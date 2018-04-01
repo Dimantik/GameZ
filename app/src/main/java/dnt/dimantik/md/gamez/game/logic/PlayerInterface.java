@@ -1,9 +1,12 @@
 package dnt.dimantik.md.gamez.game.logic;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
+import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 import dnt.dimantik.md.gamez.game.logic.clases.Player;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
@@ -141,31 +144,37 @@ public class PlayerInterface {
 
     // ИНТЕРФЕЙС СУМКИ
 
-    public boolean addResourceToPlayerBag(Resource resource){
-        return resource.addOwner(mPlayer.getCurrentBag());
+    public boolean addResourceToPlayerBag(Resource resource, String flag){
+        if (mPlayer.getCurrentBag().isPossibleToPut(resource, flag)) {
+            resource.deleteOwner();
+            resource.addOwner(mPlayer.getCurrentBag(), flag);
+            return true;
+        }
+        return false;
     }
 
-    public boolean addResourceListToPlayerBag(List<Resource> resourceList){
+    public boolean addResourceListToPlayerBag(List<Resource> resourceList, String flag){
         if (mPlayer.getCurrentBag().getFreeSpace() < resourceList.size()){
             return false;
         } else {
             for (Resource resource : resourceList){
-                addResourceToPlayerBag(resource);
+                addResourceToPlayerBag(resource, flag);
             }
             return true;
         }
     }
 
-    public boolean addResourceToPlayerTransportBag(Resource resource){
-        return resource.addOwner(mPlayer.getCurrentTransport().getBag());
+    public boolean addResourceToPlayerTransportBag(Resource resource, String flag){
+        resource.deleteOwner();
+        return resource.addOwner(mPlayer.getCurrentTransport().getBag(), flag);
     }
 
-    public boolean addResourceListToPlayerTransportBag(List<Resource> resourceList){
+    public boolean addResourceListToPlayerTransportBag(List<Resource> resourceList, String flag){
         if (mPlayer.getCurrentTransport().getBag().getFreeSpace() < resourceList.size()){
             return false;
         } else {
             for (Resource resource : resourceList){
-                addResourceToPlayerTransportBag(resource);
+                addResourceToPlayerTransportBag(resource, flag);
             }
             return true;
         }
@@ -228,70 +237,83 @@ public class PlayerInterface {
     }
 
 
-    public void setCurrentHeadClothes(HeadClothes headClothes){
-        if (headClothes == null){
-            return;
+    public void setCurrentHeadClothes(HeadClothes newHeadClothes){
+        Owner ownerNewHeadClothes = newHeadClothes.deleteOwner();
+        HeadClothes oldHeadClothes = getCurrentHeadClothes();
+        if (oldHeadClothes != null){
+            oldHeadClothes.deleteOwner();
+            oldHeadClothes.addOwner(ownerNewHeadClothes, null);
         }
-        headClothes.deleteOwner();
-        headClothes.addPlayerOwner(mPlayer);
+        newHeadClothes.addOwner(mPlayer, null);
     }
 
-    public void setCurrentBodyClothes(BodyClothes bodyClothes){
-        if (bodyClothes == null){
-            return;
+    public void setCurrentBodyClothes(BodyClothes newBodyClothes){
+        Owner ownerNewBodyClothes = newBodyClothes.deleteOwner();
+        BodyClothes oldBodyClothes = getCurrentBodyClothes();
+        if (oldBodyClothes != null){
+            oldBodyClothes.deleteOwner();
+            oldBodyClothes.addOwner(ownerNewBodyClothes, null);
         }
-        bodyClothes.deleteOwner();
-        bodyClothes.addPlayerOwner(mPlayer);
+        newBodyClothes.addOwner(mPlayer, null);
     }
 
-    public void setCurrentLegsClothes(LegsClothes legsClothes){
-        if (legsClothes == null){
-            return;
+    public void setCurrentLegsClothes(LegsClothes newLegsClothes){
+        LegsClothes oldLegsClothes = getCurrentLegsClothes();
+        Owner ownerNewLegsClothes = newLegsClothes.deleteOwner();
+        if (oldLegsClothes != null){
+            oldLegsClothes.deleteOwner();
+            oldLegsClothes.addOwner(ownerNewLegsClothes, null);
         }
-        legsClothes.deleteOwner();
-        legsClothes.addPlayerOwner(mPlayer);
+        newLegsClothes.addOwner(mPlayer, null);
     }
 
-    public void setCurrentFeetClothes(FeetClothes feetClothes){
-        if (feetClothes == null){
-            return;
+    public void setCurrentFeetClothes(FeetClothes newFeetClothes){
+        FeetClothes oldFeetClothes = getCurrentFeetClothes();
+        Owner ownerNewLegsClothes = newFeetClothes.deleteOwner();
+        if (oldFeetClothes != null){
+            oldFeetClothes.deleteOwner();
+            oldFeetClothes.addOwner(ownerNewLegsClothes, null);
         }
-        feetClothes.deleteOwner();
-        feetClothes.addPlayerOwner(mPlayer);
+        newFeetClothes.addOwner(mPlayer, null);
     }
 
-    public void setCurrentFirstWeapon(Weapon weapon){
-        if (weapon == null){
-            return;
+    public void setCurrentFirstWeapon(Weapon newWeapon){
+        Weapon oldWeapon = getCurrentFirstWeapon();
+        Owner owner = newWeapon.deleteOwner();
+        if (oldWeapon != null){
+            oldWeapon.deleteOwner();
+            oldWeapon.addOwner(owner, Player.SECOND_SLOT);
         }
-        weapon.deleteOwner();
-        weapon.addPlayerOwner(mPlayer, Player.FIRST_SLOT);
+        newWeapon.addOwner(mPlayer, Player.FIRST_SLOT);
     }
 
-    public void setCurrentSecondWeapon(Weapon weapon){
-        if (weapon == null){
-            return;
+    public void setCurrentSecondWeapon(Weapon newWeapon){
+        Weapon oldWeapon = getCurrentSecondWeapon();
+        Owner owner = newWeapon.deleteOwner();
+        if (oldWeapon != null){
+            oldWeapon.deleteOwner();
+            oldWeapon.addOwner(owner, Player.FIRST_SLOT);
         }
-        weapon.deleteOwner();
-        weapon.addPlayerOwner(mPlayer, Player.SECOND_SLOT);
+        newWeapon.addOwner(mPlayer, Player.SECOND_SLOT);
     }
 
-    public void setCurrentTransport(Transport transport){
-        if (transport == null){
-            return;
-        }
-        transport.deleteOwner();
-        transport.addPlayerOwner(mPlayer);
+    public void setCurrentTransport(Transport newTransport){
+        Transport oldTransport = getCurrentTransport();
+        Owner ownerNewTransport = newTransport.deleteOwner();
+        Owner ownerOldTransport = oldTransport.deleteOwner();
+
+        oldTransport.addOwner(ownerNewTransport, null);
+        newTransport.addOwner(ownerOldTransport, null);
     }
 
-    public void setCurrentBag(Bag bag){
-        if (bag == null){
-            return;
-        }
-        bag.deleteOwner();
-        bag.addPlayerOwner(mPlayer);
-    }
+    public void setCurrentBag(Bag newBag){
+        Bag oldBag = getCurrentBag();
+        Owner ownerNewBag = newBag.deleteOwner();
+        Owner ownerOldBag = oldBag.deleteOwner();
 
+        oldBag.addOwner(ownerNewBag, null);
+        newBag.addOwner(ownerOldBag, null);
+    }
 
     //Снять текущую экипировку
     //Снять защиту головы
@@ -383,7 +405,7 @@ public class PlayerInterface {
     }
 
     public boolean addResourceToBag(Resource resource){
-        return mPlayer.getCurrentBag().putResource(resource);
+        return mPlayer.getCurrentBag().putResource(resource, null);
     }
 
     //Снять и положить в сумку текущую экипировку
@@ -393,7 +415,7 @@ public class PlayerInterface {
             return false;
         } else {
             HeadClothes headClothes = removeCurrentHeadClothes();
-            return mPlayer.getCurrentBag().putResource(headClothes);
+            return mPlayer.getCurrentBag().putResource(headClothes, null);
         }
     }
 
@@ -403,7 +425,7 @@ public class PlayerInterface {
             return false;
         } else {
             BodyClothes bodyClothes = removeCurrentBodyClothes();
-            return mPlayer.getCurrentBag().putResource(bodyClothes);
+            return mPlayer.getCurrentBag().putResource(bodyClothes, null);
         }
     }
 
@@ -413,7 +435,7 @@ public class PlayerInterface {
             return false;
         } else {
             LegsClothes legsClothes = removeCurrentLegsClothes();
-            return mPlayer.getCurrentBag().putResource(legsClothes);
+            return mPlayer.getCurrentBag().putResource(legsClothes, null);
         }
     }
 
@@ -423,7 +445,7 @@ public class PlayerInterface {
             return false;
         } else {
             FeetClothes feetClothes = removeCurrentFeetClothes();
-            return mPlayer.getCurrentBag().putResource(feetClothes);
+            return mPlayer.getCurrentBag().putResource(feetClothes, null);
         }
     }
 
@@ -433,7 +455,7 @@ public class PlayerInterface {
             return false;
         } else {
             Weapon weapon = removeCurrentFirstWeapon();
-            return mPlayer.getCurrentBag().putResource(weapon);
+            return mPlayer.getCurrentBag().putResource(weapon, null);
         }
     }
 
@@ -443,7 +465,7 @@ public class PlayerInterface {
             return false;
         } else {
             Weapon weapon = removeCurrentSecondWeapon();
-            return mPlayer.getCurrentBag().putResource(weapon);
+            return mPlayer.getCurrentBag().putResource(weapon, null);
         }
     }
 
@@ -452,7 +474,7 @@ public class PlayerInterface {
     public List<Resource> changeBag(Bag bag){
         List<Resource> excessResourceList = new LinkedList<>();
         for (Resource resource : mPlayer.getCurrentBag().getResourceList()){
-            if (!bag.putResource(resource)) {
+            if (!bag.putResource(resource, null)) {
                 excessResourceList.add(resource);
             }
         }

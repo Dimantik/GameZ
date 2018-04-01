@@ -290,50 +290,62 @@ public class CharacterFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         Resource resource = null;
+        String phase = null;
         switch (v.getId()) {
             case R.id.current_head_clothes:
                 if (mGameInterface.getPlayerHeadClothes() != null) {
                     resource = mGameInterface.getPlayerHeadClothes();
+                    phase = Showable.CURRENT;
                 }
                 break;
             case R.id.current_body_clothes:
                 if (mGameInterface.getPlayerBodyClothes() != null) {
                     resource = mGameInterface.getPlayerBodyClothes();
+                    phase = Showable.CURRENT;
                 }
                 break;
             case R.id.current_legs_clothes:
                 if (mGameInterface.getPlayerLegsClothes() != null) {
                     resource = mGameInterface.getPlayerLegsClothes();
+                    phase = Showable.CURRENT;
                 }
                 break;
             case R.id.current_feet_clothes:
                 if (mGameInterface.getPlayerFeetClothes() != null) {
                     resource = mGameInterface.getPlayerFeetClothes();
+                    phase = Showable.CURRENT;
                 }
                 break;
             case R.id.current_bag:
                 if (mGameInterface.getPlayer().getCurrentBag() != null) {
                     resource = mGameInterface.getPlayerBag();
+                    phase = Showable.CURRENT;
                 }
                 break;
             case R.id.current_first_weapon:
                 if (mGameInterface.getPlayer().getCurrentFirstWeapon() != null) {
                     resource = mGameInterface.getPlayerFirstWeapon();
+                    phase = Showable.CURRENT_FIRST;
                 }
                 break;
             case R.id.current_second_weapon:
                 if (mGameInterface.getPlayer().getCurrentSecondWeapon() != null) {
                     resource = mGameInterface.getPlayerSecondWeapon();
+                    phase = Showable.CURRENT_SECOND;
                 }
                 break;
             case R.id.current_transport:
                 if (mGameInterface.getPlayer().getCurrentTransport() != null) {
                     resource = mGameInterface.getPlayerTransport();
+                    phase = Showable.CURRENT;
                 }
                 break;
         }
 
-        DialogFragment dialog = Assistant.getFragmentForShowReaource(resource, Showable.CURRENT);
+        DialogFragment dialog = Assistant.getFragmentForShowResource(resource, phase);
+        if (dialog == null){
+            return;
+        }
         dialog.setTargetFragment(CharacterFragment.this, REQUEST_SHOW_CURRENT_RESOURCE);
         dialog.show(getFragmentManager(), Showable.CURRENT);
     }

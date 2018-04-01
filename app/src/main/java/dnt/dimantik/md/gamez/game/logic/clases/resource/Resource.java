@@ -5,21 +5,20 @@ import android.support.annotation.NonNull;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.clases.BDInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
 import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 
 /**
  * Created by dimantik on 10/20/17.
  */
 
-public abstract class Resource implements BDInterface, Comparable<Resource> {
+public abstract class Resource implements BDInterface {
 
     private UUID mId;
     private String mName;
     private String mAssertDrawable;
     private ResourceType mResourceType;
 
-    protected ResourceOwner mOwner;
+    protected Owner mOwner;
 
     public Resource(UUID id, String name, ResourceType resourceType, String assetDrawableName){
         mId = id;
@@ -64,44 +63,27 @@ public abstract class Resource implements BDInterface, Comparable<Resource> {
         mResourceType = resourceType;
     }
 
-    public ResourceOwner deleteOwner(){
+    public Owner deleteOwner(){
         if (mOwner != null){
             mOwner.deleteResource(this);
-            ResourceOwner owner = mOwner;
+            Owner owner = mOwner;
             mOwner = null;
             return owner;
         }
         return null;
     }
 
-    public boolean addOwner(ResourceOwner owner){
-        boolean result = owner.putResource(this);
-        if (result){
-            if (mOwner != null){
-                mOwner.deleteResource(this);
-            }
-            mOwner = owner;
-            return true;
+    public boolean addOwner(Owner owner, String flag){
+        if (!owner.isPossibleToPut(this, flag)){
+            return false;
         }
-        return false;
+        owner.putResource(this, flag);
+        mOwner = owner;
+        return true;
     }
 
     public Owner getOwner() {
         return mOwner;
-    }
-
-    @Override
-    public int compareTo(@NonNull Resource resource) {
-        int hashCode1 = resource.getId().hashCode();
-        int hashCode2 = mId.hashCode();
-
-        if (hashCode1 == hashCode2){
-            return 0;
-        } else if (hashCode2 > hashCode1) {
-            return 1;
-        } else {
-            return -1;
-        }
     }
 
     public enum ResourceType {

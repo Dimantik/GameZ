@@ -56,6 +56,8 @@ public class BagFragment extends Fragment {
     private RecyclerView mBagRecyclerView;
     private ResourceBagAdapter mBagAdapter;
 
+    private Bag mBag;
+
     public static BagFragment newInstance() {
         BagFragment fragment = new BagFragment();
         Bundle args = new Bundle();
@@ -79,13 +81,13 @@ public class BagFragment extends Fragment {
 
     private void firstInitialize() {
         mGameInterface = ((MainActivity)getActivity()).getGameInterface();
+        mBag = mGameInterface.getPlayer().getCurrentBag();
 
         mCapacityTextView = (TextView)mView.findViewById(R.id.bag_capacity);
-        Bag bag = mGameInterface.getPlayer().getCurrentBag();
-        mCapacityTextView.setText(bag.getName() + "(" + bag.getEngagedSpace() + "/" + bag.getCapacity() + ")");
 
         mBagRecyclerView = (RecyclerView) mView.findViewById(R.id.bag_recycler_view);
         mBagRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+
         updateUI();
     }
 
@@ -108,12 +110,20 @@ public class BagFragment extends Fragment {
     }
 
     private void updateUI(){
-        if (mBagAdapter == null){
-            mBagAdapter = new ResourceBagAdapter(mGameInterface.getPlayer().getCurrentBag().getResourceList());
-            mBagRecyclerView.setAdapter(mBagAdapter);
+        String message;
+        if (mGameInterface.getPlayerBag() == null){
+            message = "У вас нет рюкзака!";
+            mCapacityTextView.setText(message);
         } else {
-            mBagAdapter.setResourceList(mGameInterface.getPlayer().getCurrentBag().getResourceList());
-            mBagAdapter.notifyDataSetChanged();
+            message = mBag.getName() + "(" + mBag.getEngagedSpace() + "/" + mBag.getCapacity() + ")";
+            mCapacityTextView.setText(message);
+            if (mBagAdapter == null){
+                mBagAdapter = new ResourceBagAdapter(mGameInterface.getPlayer().getCurrentBag().getResourceList());
+                mBagRecyclerView.setAdapter(mBagAdapter);
+            } else {
+                mBagAdapter.setResourceList(mGameInterface.getPlayer().getCurrentBag().getResourceList());
+                mBagAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -180,7 +190,7 @@ public class BagFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            DialogFragment dialog = Assistant.getFragmentForShowReaource(mResource, Showable.IN_BAG);
+            DialogFragment dialog = Assistant.getFragmentForShowResource(mResource, Showable.IN_BAG);
             dialog.setTargetFragment(BagFragment.this, REQUEST_SHOW_RESOURCE);
             dialog.show(getFragmentManager(), RESOURCE_DIALOG);
         }

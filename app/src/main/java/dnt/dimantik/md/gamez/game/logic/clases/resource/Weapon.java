@@ -2,8 +2,6 @@ package dnt.dimantik.md.gamez.game.logic.clases.resource;
 
 import java.util.UUID;
 
-import dnt.dimantik.md.gamez.game.logic.clases.EquipmentOwner;
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
 import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 
 /**
@@ -11,8 +9,6 @@ import dnt.dimantik.md.gamez.game.logic.clases.Owner;
  */
 
 public abstract class Weapon extends Resource {
-
-    private EquipmentOwner mPlayerOwner;
 
     private int mPower;
 
@@ -31,37 +27,6 @@ public abstract class Weapon extends Resource {
 
     public void setPower(int power) {
         mPower = power;
-    }
-
-    public void addPlayerOwner(EquipmentOwner playerOwner, int slot){
-        mPlayerOwner = playerOwner;
-        mPlayerOwner.addCurrentWeapon(this, slot);
-    }
-
-    public void deletePlayerOwner(){
-        deleteOwner();
-        mPlayerOwner.deleteCurrentWeapon(this);
-        mPlayerOwner = null;
-    }
-
-    public Owner getPlayerOwner() {
-        return mPlayerOwner;
-    }
-
-    @Override
-    public boolean addOwner(ResourceOwner owner) {
-        if (mPlayerOwner == null){
-            return super.addOwner(owner);
-        } else {
-            boolean result = owner.putResource(this);
-            if (result){
-                mPlayerOwner.deleteCurrentWeapon(this);
-                mPlayerOwner = null;
-                mOwner = owner;
-                return true;
-            }
-            return false;
-        }
     }
 
 }

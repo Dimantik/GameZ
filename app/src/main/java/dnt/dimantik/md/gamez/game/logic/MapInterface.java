@@ -1,6 +1,7 @@
 package dnt.dimantik.md.gamez.game.logic;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,7 @@ import dnt.dimantik.md.gamez.game.logic.clases.Player;
 import dnt.dimantik.md.gamez.game.logic.clases.location.Location;
 import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
 import dnt.dimantik.md.gamez.game.logic.clases.location.Way;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Liquid;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Transport;
@@ -38,13 +40,34 @@ public class MapInterface {
 
     // ИНТЕРФЕЙС РАБОТЫ С РЕСУРСАМИ НА ЛОКАЦИЯХ
 
-    public void addResourceToCurrentPlace(Resource resource){
-        resource.addOwner(mGameData.getCurrentPlace());
+    public void addResourceToCurrentPlace(Resource resource, String flag){
+        resource.deleteOwner();
+        if (mGameData.getCurrentPlace().isPossibleToPut(resource, flag)){
+            if (resource instanceof Bag){
+                Bag bag = (Bag) resource;
+                List<Resource> resourceList = bag.getResourceList();
+                resourceList.add(bag);
+                bag.setResourceUUIDList(new HashSet<UUID>());
+                bag.setResourceList(new LinkedList<Resource>());
+                bag.update();
+                addResourceListToCurrentPlace(resourceList, flag);
+            } else if (resource instanceof Transport){
+                Bag bag = ((Transport) resource).getBag();
+                List<Resource> resourceList = bag.getResourceList();
+                resourceList.add(resource);
+                bag.setResourceUUIDList(new HashSet<UUID>());
+                bag.setResourceList(new LinkedList<Resource>());
+                bag.update();
+                addResourceListToCurrentPlace(resourceList, flag);
+            } else {
+                resource.addOwner(mGameData.getCurrentPlace(), flag);
+            }
+        }
     }
 
-    public void addResourceListToCurrentPlace(List<Resource> resourceList){
+    public void addResourceListToCurrentPlace(List<Resource> resourceList, String flag){
         for (Resource resource : resourceList){
-            addResourceToCurrentPlace(resource);
+            addResourceToCurrentPlace(resource, flag);
         }
     }
 
@@ -118,13 +141,6 @@ public class MapInterface {
         return mGameData.getAllMinutes();
     }
 
-    public void deleteResourceFromCurrentPlace(Resource resource){
-        mGameData.getCurrentPlace().deleteResource(resource);
-    }
-
-    public void addResourceInCurrentPlace(Resource resource){
-        mGameData.getCurrentPlace().putResource(resource);
-    }
 
     public GameData getGameData() {
         return mGameData;

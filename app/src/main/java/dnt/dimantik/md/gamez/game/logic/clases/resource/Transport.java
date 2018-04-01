@@ -4,17 +4,13 @@ package dnt.dimantik.md.gamez.game.logic.clases.resource;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
-import dnt.dimantik.md.gamez.game.logic.clases.EquipmentOwner;
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
 import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 
 /**
  * Created by dimantik on 10/20/17.
  */
 
-public class Transport extends Resource {
-
-    private EquipmentOwner mPlayerOwner;
+public class Transport extends Resource implements Owner{
 
     private double mPower;
     private int mProtection;
@@ -84,36 +80,29 @@ public class Transport extends Resource {
         mFuelQuantity += quantity;
     }
 
-    public void addPlayerOwner(EquipmentOwner playerOwner){
-        deleteOwner();
-        mPlayerOwner = playerOwner;
-        mPlayerOwner.addCurrentTransport(this);
-    }
-
-    public Owner deletePlayerOwner(){
-        if (mPlayerOwner != null){
-            mPlayerOwner.deleteCurrentTransport(this);
-            Owner owner = mPlayerOwner;
-            mPlayerOwner = null;
-            return owner;
+    @Override
+    public boolean putResource(Resource resource, String flag) {
+        if (!isPossibleToPut(resource, flag)){
+            return false;
         }
-        return null;
+
+        setBag((Bag) resource, true);
+        update();
+        return true;
     }
 
     @Override
-    public boolean addOwner(ResourceOwner owner) {
-        if (mPlayerOwner == null){
-            return super.addOwner(owner);
-        } else {
-            boolean result = owner.putResource(this);
-            if (result){
-                mPlayerOwner.deleteCurrentTransport(this);
-                mPlayerOwner = null;
-                mOwner = owner;
-                return true;
-            }
-            return false;
+    public boolean isPossibleToPut(Resource resource, String flag) {
+        if (resource instanceof Bag){
+            return true;
         }
+        return false;
+    }
+
+    @Override
+    public void deleteResource(Resource resource) {
+        setBag(null, true);
+        update();
     }
 
     @Override

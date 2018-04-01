@@ -3,6 +3,7 @@ package dnt.dimantik.md.gamez.controllers.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -80,7 +81,11 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
     }
 
     private void setup(){
-        mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_2_button, null, false);
+        if (mPhase.equals(CURRENT)){
+            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_2_button, null, false);
+        } else if (mPhase.equals(IN_FIND_RESOURCES)) {
+            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_1_button, null, false);
+        }
 
         TextView transportName = (TextView)mView.findViewById(R.id.resource_name);
         TextView firstCharacteristic = (TextView)mView.findViewById(R.id.first_characteristic);
@@ -96,16 +101,6 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
         Assistant.fillImage(getContext(), imageView, mTransport.getAssertDrawable());
 
         mFirstActButton = (Button)mView.findViewById(R.id.first_act_button);
-        Button secondActButton = (Button)mView.findViewById(R.id.second_act_button);
-
-        secondActButton.setText("Заглянуть в багажник");
-        secondActButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.putExchangeResourceBagTransportBagFragment();
-                getDialog().cancel();
-            }
-        });
 
         switch (mPhase){
             case CURRENT:
@@ -124,11 +119,21 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
 
     private void setupIfCurrent(){
         mFirstActButton.setText("Оставить трансапорт");
-
         mFirstActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGameInterface.addResourceInCurrentPlace(mGameInterface.getPlayerTransport());
+                mGameInterface.addResourceToCurrentPlace(mGameInterface.getPlayerTransport(), null);
+                getDialog().cancel();
+            }
+        });
+
+        Button secondActButton = (Button)mView.findViewById(R.id.second_act_button);
+        secondActButton.setText("Заглянуть в багажник");
+        secondActButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.putExchangeResourceBagTransportBagFragment();
+                setToUpdate();
                 getDialog().cancel();
             }
         });
@@ -140,8 +145,17 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
             @Override
             public void onClick(View view) {
                mGameInterface.setPlayerTransport(mTransport);
+               setToUpdate();
+               getDialog().cancel();
             }
         });
+    }
+
+    private void setToUpdate(){
+        if (getTargetFragment() == null){
+            return;
+        }
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent());
     }
 
     public interface OnFragmentInteractionListener {

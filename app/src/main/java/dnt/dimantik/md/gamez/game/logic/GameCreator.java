@@ -495,50 +495,50 @@ class GameCreator {
         player.setThirst(80);
 
         Bag bag = new Bag("Простой рюкзак", BAG_3_IMG, 5);
-        bag.addPlayerOwner(player);
+        bag.addOwner(player, null);
         sResourceMap.put(bag.getId(), bag);
 
         BodyClothes bathrobe = new BodyClothes("Кожанкаа", 1, BODY_CLOTHES_1_IMG);
-        bathrobe.addPlayerOwner(player);
+        bathrobe.addOwner(player, null);
         sResourceMap.put(bathrobe.getId(), bathrobe);
 
         LegsClothes pajamas = new LegsClothes("Пижама", 1, LEGS_CLOTHES_1_IMG);
-        pajamas.addPlayerOwner(player);
+        pajamas.addOwner(player, null);
         sResourceMap.put(pajamas.getId(), pajamas);
 
         FeetClothes slippers = new FeetClothes("Кроссовки", 1, FEET_CLOTHES_1_IMG);
-        slippers.addPlayerOwner(player);
+        slippers.addOwner(player, null);
         sResourceMap.put(slippers.getId(), slippers);
 
         HeadClothes hat = new HeadClothes("Кепка", 1, HEAD_CLOTHES_1_IMG);
-        hat.addPlayerOwner(player);
+        hat.addOwner(player, null);
         sResourceMap.put(hat.getId(), hat);
 
         FireArms fireArms = new FireArms("Автомат", 5, FIRE_ARMS_3_IMG, FireArms.Type.MACHINE);
         Cartridges cartridges = new Cartridges("Пули", CARTRIDGES_3_IMG, 100, FireArms.Type.MACHINE);
         fireArms.setCartridges(cartridges, true);
 
-        fireArms.addPlayerOwner(player, Player.FIRST_SLOT);
+        fireArms.addOwner(player, Player.FIRST_SLOT);
         sResourceMap.put(fireArms.getId(), fireArms);
         sResourceMap.put(cartridges.getId(), cartridges);
 
         SteelArms steelArms = new SteelArms("Топор", 2, STEEL_ARMS_2_IMG);
-        steelArms.addPlayerOwner(player, Player.SECOND_SLOT);
+        steelArms.addOwner(player, Player.SECOND_SLOT);
         sResourceMap.put(steelArms.getId(), steelArms);
 
         Bag bagTransport = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 20);
 
         Transport transport = new Transport("Военный джип", 0.05, 20, 1000, TRANSPORT_1_IMG);
         transport.setBag(bagTransport, true);
-        transport.addPlayerOwner(player);
+        transport.addOwner(player, null);
         sResourceMap.put(bagTransport.getId(), bagTransport);
         sResourceMap.put(transport.getId(), transport);
 
         Food food = new Food("Консервы", 100, FOOD_1_IMG);
         Liquid liquid = new Liquid("Бутылка воды", 100, LIQUID_3_IMG);
 
-        food.addOwner(bag);
-        liquid.addOwner(bag);
+        food.addOwner(bag, null);
+        liquid.addOwner(bag, null);
 
         sResourceMap.put(food.getId(), food);
         sResourceMap.put(liquid.getId(), liquid);
@@ -744,8 +744,23 @@ class GameCreator {
         for (Resource resource : sResourceMap.values()){
             int placeRandom = (int)((Math.random()*(gameInterface.getPlaceList().size())));
             Place place = placeList.get(placeRandom);
-            resource.addOwner(place);
+            resource.addOwner(place, null);
         }
+
+        Bag bagTransportTest = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 2);
+        sResourceMap.put(bagTransportTest.getId(), bagTransportTest);
+
+        Transport transportTest = new Transport("Военный джип", 0.05, 20, 1000, TRANSPORT_1_IMG);
+        transportTest.setBag(bagTransportTest, true);
+        sResourceMap.put(transportTest.getId(), transportTest);
+
+        Bag bagTest = new Bag("Мал сумка", AssertResourceName.BAG_1_IMG, 3);
+        sResourceMap.put(bagTest.getId(), bagTest);
+
+        Place place = gameInterface.getCurrentPlace();
+
+        transportTest.addOwner(place, null);
+        bagTest.addOwner(place, null);
     }
 
     static void continueGame(GameInterface gameInterface){
@@ -785,7 +800,7 @@ class GameCreator {
         for (Resource owner : resourceMap.values()){
             if (owner instanceof Bag){
                 for (UUID uuid : ((Bag)owner).getResourceUUIDList()){
-                    resourceMap.get(uuid).addOwner((Bag)owner);
+                    resourceMap.get(uuid).addOwner((Bag)owner, null);
                 }
                 Log.i("TAG", "B R SIZE - " + ((Bag)owner).getResourceList().size() + "/" + ((Bag)owner).getResourceUUIDList().size());
             } else if (owner instanceof Transport) {
@@ -799,18 +814,42 @@ class GameCreator {
 
         Player player = gameInterface.getPlayer();
 
-        ((Bag)resourceMap.get(player.getCurrentBagUUID())).addPlayerOwner(player);
-        ((Transport)resourceMap.get(player.getCurrentTransportUUID())).addPlayerOwner(player);
-        ((Weapon)resourceMap.get(player.getCurrentFirstWeaponUUID())).addPlayerOwner(player, Player.FIRST_SLOT);
-        ((Weapon)resourceMap.get(player.getCurrentSecondWeaponUUID())).addPlayerOwner(player, Player.SECOND_SLOT);
-        ((HeadClothes)resourceMap.get(player.getCurrentHeadClothesUUID())).addPlayerOwner(player);
-        ((BodyClothes)resourceMap.get(player.getCurrentBodyClothesUUID())).addPlayerOwner(player);
-        ((LegsClothes)resourceMap.get(player.getCurrentLegsClothesUUID())).addPlayerOwner(player);
-        ((FeetClothes)resourceMap.get(player.getCurrentFeetClothesUUID())).addPlayerOwner(player);
+        Bag bag = ((Bag)resourceMap.get(player.getCurrentBagUUID()));
+        if (bag != null){
+            bag.addOwner(player, null);
+        }
+        Transport transport = ((Transport)resourceMap.get(player.getCurrentTransportUUID()));
+        if (transport != null){
+            transport.addOwner(player, null);
+        }
+        Weapon weapon1 = ((Weapon)resourceMap.get(player.getCurrentFirstWeaponUUID()));
+        if (weapon1 != null){
+            weapon1.addOwner(player, Player.FIRST_SLOT);
+        }
+        Weapon weapon2 = ((Weapon)resourceMap.get(player.getCurrentSecondWeaponUUID()));
+        if (weapon2 != null){
+            weapon2.addOwner(player, Player.SECOND_SLOT);
+        }
+        HeadClothes headClothes = ((HeadClothes)resourceMap.get(player.getCurrentHeadClothesUUID()));
+        if (headClothes != null){
+            headClothes.addOwner(player, null);
+        }
+        BodyClothes bodyClothes = ((BodyClothes)resourceMap.get(player.getCurrentBodyClothesUUID()));
+        if (bodyClothes != null){
+            bodyClothes.addOwner(player, null);
+        }
+        LegsClothes legsClothes = ((LegsClothes)resourceMap.get(player.getCurrentLegsClothesUUID()));
+        if (legsClothes != null){
+            legsClothes.addOwner(player, null);
+        }
+        FeetClothes feetClothes = ((FeetClothes)resourceMap.get(player.getCurrentFeetClothesUUID()));
+        if (feetClothes != null){
+            feetClothes.addOwner(player, null);
+        }
 
         for (Place place : gameInterface.getPlaceList()){
             for (UUID uuid : place.getResourceUUIDList()){
-                resourceMap.get(uuid).addOwner(place);
+                resourceMap.get(uuid).addOwner(place, null);
             }
             Log.i("TAG", "P R SIZE - " + place.getResourceList().size() + "/" + place.getResourceUUIDList().size());
         }

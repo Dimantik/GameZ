@@ -2,11 +2,13 @@ package dnt.dimantik.md.gamez.game.logic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
+import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.game.logic.clases.Player;
 import dnt.dimantik.md.gamez.game.logic.clases.location.Location;
 import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
@@ -69,14 +71,6 @@ public class GameInterface {
 
     // PLAYER_INTERFACE
 
-    public PlayerInterface getPlayerInterface() {
-        return mPlayerInterface;
-    }
-
-    public void setPlayerInterface(PlayerInterface playerInterface) {
-        mPlayerInterface = playerInterface;
-    }
-
     public Player getPlayer(){
         return mPlayerInterface.getPlayer();
     }
@@ -120,20 +114,20 @@ public class GameInterface {
         mPlayerInterface.upHealth(drug);
     }
 
-    public boolean addResourceToPlayerBag(Resource resource){
-        return mPlayerInterface.addResourceToPlayerBag(resource);
+    public boolean addResourceToPlayerBag(Resource resource, String flag){
+        return mPlayerInterface.addResourceToPlayerBag(resource, flag);
     }
 
-    public boolean addResourceListToPlayerBag(List<Resource> resourceList){
-        return mPlayerInterface.addResourceListToPlayerBag(resourceList);
+    public boolean addResourceListToPlayerBag(List<Resource> resourceList, String flag){
+        return mPlayerInterface.addResourceListToPlayerBag(resourceList, flag);
     }
 
-    public boolean addResourceToPlayerTransportBag(Resource resource){
-        return mPlayerInterface.addResourceToPlayerTransportBag(resource);
+    public boolean addResourceToPlayerTransportBag(Resource resource, String flag){
+        return mPlayerInterface.addResourceToPlayerTransportBag(resource, flag);
     }
 
-    public boolean addResourceListToPlayerTransportBag(List<Resource> resourceList){
-        return mPlayerInterface.addResourceListToPlayerTransportBag(resourceList);
+    public boolean addResourceListToPlayerTransportBag(List<Resource> resourceList, String flag){
+        return mPlayerInterface.addResourceListToPlayerTransportBag(resourceList, flag);
     }
 
     public List<Resource> getResourceListFromPlayerBag(){
@@ -213,11 +207,15 @@ public class GameInterface {
     }
 
     public void setPlayerTransport(Transport transport){
+        List<Resource> resourceList = exchangeResourceFromTwoBags(getPlayerTransport().getBag(), transport.getBag());
         mPlayerInterface.setCurrentTransport(transport);
+        addResourceListToCurrentPlace(resourceList, null);
     }
 
     public void setPlayerBag(Bag bag){
+        List<Resource> resourceList = exchangeResourceFromTwoBags(getPlayerBag(), bag);
         mPlayerInterface.setCurrentBag(bag);
+        addResourceListToCurrentPlace(resourceList, null);
     }
 
 
@@ -230,12 +228,12 @@ public class GameInterface {
 
     // MAP_INTERFACE
 
-    public void addResourceToCurrentPlace(Resource resource){
-        mMapInterface.addResourceToCurrentPlace(resource);
+    public void addResourceToCurrentPlace(Resource resource, String flag){
+        mMapInterface.addResourceToCurrentPlace(resource, flag);
     }
 
-    public void addResourceListToCurrentPlace(List<Resource> resourceList){
-        mMapInterface.addResourceListToCurrentPlace(resourceList);
+    public void addResourceListToCurrentPlace(List<Resource> resourceList, String flag){
+        mMapInterface.addResourceListToCurrentPlace(resourceList, flag);
     }
 
     public List<Resource> getResourceListInCurrentPlace(){
@@ -249,207 +247,6 @@ public class GameInterface {
     public List<Resource> getFindTransportListInCurrentPlace(){
         return mMapInterface.getFindTransportListInCurrentPlace();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void setResourceInterface(ResourceInterface resourceInterface){
-        mResourceInterface = resourceInterface;
-    }
-
-    public ResourceInterface getResourceInterface(){
-        return mResourceInterface;
-    }
-
-    public MapInterface getMapInterface() {
-        return mMapInterface;
-    }
-
-    public void setMapInterface(MapInterface mapInterface) {
-        mMapInterface = mapInterface;
-    }
-
-
-    public List<Resource> findResourceInTheCurrentPlace(){
-        List<Resource> resourceList = mMapInterface.getCurrentPlace().getResourceList();
-        return resourceList;
-    }
-
-    public List<Resource> getPlayerResourceList(){
-        return mPlayerInterface.getPlayerResourceListInBag();
-    }
-
-    public void addResourceListInCurrentPlace(List<Resource> resourceList){
-        for (Resource resource : resourceList){
-            resource.deleteOwner();
-            resource.addOwner(mMapInterface.getCurrentPlace());
-        }
-    }
-
-    public boolean putResourceListInPlayerBag(List<Resource> resourceList){
-        if (mPlayerInterface.getPlayer().getCurrentBag().getFreeSpace() < resourceList.size()){
-            return false;
-        } else {
-            for (Resource resource : resourceList){
-                resource.deleteOwner();
-                resource.addOwner(mPlayerInterface.getPlayer().getCurrentBag());
-            }
-            return true;
-        }
-    }
-
-    public boolean putResourceInPlayerBag(Resource resource){
-        if (mPlayerInterface.getPlayer().getCurrentBag().getFreeSpace() < 1){
-            return false;
-        } else {
-            resource.deleteOwner();
-            resource.addOwner(mPlayerInterface.getPlayer().getCurrentBag());
-            return true;
-        }
-    }
-
-
-    public void addResourceInCurrentPlace(Resource resource){
-        resource.deleteOwner();
-        resource.addOwner(mMapInterface.getCurrentPlace());
-    }
-
-    public void changeCurrentHeadClothes(HeadClothes headClothes){
-       ResourceOwner owner = headClothes.deleteOwner();
-       HeadClothes oldHeadClothes = mPlayerInterface.getPlayer().getCurrentHeadClothes();
-       oldHeadClothes.deletePlayerOwner();
-       oldHeadClothes.addOwner(owner);
-       mPlayerInterface.setCurrentHeadClothes(headClothes);
-    }
-
-    public void changeCurrentBodyClothes(BodyClothes bodyClothes){
-        ResourceOwner owner = bodyClothes.deleteOwner();
-        BodyClothes oldBodyClothes = mPlayerInterface.getPlayer().getCurrentBodyClothes();
-        oldBodyClothes.deletePlayerOwner();
-        oldBodyClothes.addOwner(owner);
-        mPlayerInterface.setCurrentBodyClothes(bodyClothes);
-    }
-
-    public void changeCurrentLegsClothes(LegsClothes legsClothes){
-        ResourceOwner owner = legsClothes.deleteOwner();
-        LegsClothes oldLegsClothes = mPlayerInterface.getPlayer().getCurrentLegsClothes();
-        oldLegsClothes.deletePlayerOwner();
-        oldLegsClothes.addOwner(owner);
-        mPlayerInterface.setCurrentLegsClothes(legsClothes);
-    }
-
-    public void changeCurrentFeetClothes(FeetClothes feetClothes){
-        ResourceOwner owner = feetClothes.deleteOwner();
-        FeetClothes oldFeetClothes = mPlayerInterface.getPlayer().getCurrentFeetClothes();
-        oldFeetClothes.deletePlayerOwner();
-        oldFeetClothes.addOwner(owner);
-        mPlayerInterface.setCurrentFeetClothes(feetClothes);
-    }
-
-    public void changeCurrentFirstWeapon(Weapon weapon){
-        ResourceOwner owner = weapon.deleteOwner();
-        Weapon oldWeapon = mPlayerInterface.getPlayer().getCurrentFirstWeapon();
-        oldWeapon.deletePlayerOwner();
-        oldWeapon.addOwner(owner);
-        mPlayerInterface.setCurrentFirstWeapon(weapon);
-    }
-
-    public void changeCurrentSecondWeapon(Weapon weapon, boolean itIsInBag){
-        ResourceOwner owner = weapon.deleteOwner();
-        Weapon oldWeapon = mPlayerInterface.getPlayer().getCurrentSecondWeapon();
-        oldWeapon.deletePlayerOwner();
-        oldWeapon.addOwner(owner);
-        mPlayerInterface.setCurrentSecondWeapon(weapon);
-    }
-
-    public void changeCurrentTransport(Transport transport){
-        ResourceOwner owner = transport.deleteOwner();
-        Transport oldTransport = mPlayerInterface.getPlayer().getCurrentTransport();
-        oldTransport.deletePlayerOwner();
-        oldTransport.addOwner(owner);
-        mPlayerInterface.setCurrentTransport(transport);
-    }
-
-    public void swapWeaponFromSlot(){
-        Weapon weapon = mPlayerInterface.getPlayer().getCurrentFirstWeapon();
-        mPlayerInterface.setCurrentFirstWeapon(mPlayerInterface.getPlayer().getCurrentSecondWeapon());
-        mPlayerInterface.setCurrentSecondWeapon(weapon);
-    }
-
-
-
-    public boolean changePlayerCurrentBag(Bag bag){
-        if (bag == null){
-            return false;
-        }
-
-        if (bag.getCapacity() < mPlayerInterface.getPlayer().getCurrentBag().getEngagedSpace()){
-            List<Resource> excess = new LinkedList<>();
-            for (Resource resource : mPlayerInterface.getPlayer().getCurrentBag().getResourceList()){
-                if (bag.getFreeSpace() != 0){
-                    bag.putResource(resource);
-                } else {
-                    excess.add(resource);
-                }
-            }
-            addResourceListInCurrentPlace(excess);
-            mPlayerInterface.getPlayer().getCurrentBag().setResourceList(new ArrayList<Resource>());
-            mMapInterface.getCurrentPlace().putResource(mPlayerInterface.getPlayer().getCurrentBag());
-            mMapInterface.getCurrentPlace().deleteResource(bag);
-            bag.update();
-            mPlayerInterface.getPlayer().getCurrentBag().update();
-            mMapInterface.getCurrentPlace().update();
-            mPlayerInterface.getPlayer().setCurrentBag(bag, true);
-            mPlayerInterface.getPlayer().update();
-
-            return false;
-        } else {
-            bag.setResourceList(mPlayerInterface.getPlayer().getCurrentBag().getResourceList());
-            mPlayerInterface.getPlayer().getCurrentBag().setResourceList(new LinkedList<Resource>());
-            mMapInterface.getCurrentPlace().putResource(mPlayerInterface.getPlayer().getCurrentBag());
-            mMapInterface.getCurrentPlace().deleteResource(bag);
-            mMapInterface.getCurrentPlace().update();
-            bag.update();
-            mPlayerInterface.getPlayer().getCurrentBag().update();
-            mPlayerInterface.getPlayer().setCurrentBag(bag, true);
-            mPlayerInterface.getPlayer().update();
-
-            return true;
-        }
-    }
-
-//    public boolean addResourceListInBagFromTransportBag(Transport transport, List<Resource> resourceList){
-//        if (mGame.getPlayer().getCurrentBag().getFreeSpace() < resourceList.size()){
-//            return false;
-//        } else {
-//            transport.getBag().deleteResourceList(resourceList, true);
-//            mGame.getPlayer().getCurrentBag().putInBagList(resourceList, true);
-//            transport.getBag().update();
-//            mGame.getPlayer().getCurrentBag().update();
-//            return true;
-//        }
-//    }
-//
-//    public void addResourceListInTransportBagFromBag(Transport transport, List<Resource> resourceList){
-//        mGame.getPlayer().getCurrentBag().deleteResourceList(resourceList, true);
-//        transport.getBag().putInBagList(resourceList, true);
-//        transport.getBag().update();
-//        mGame.getPlayer().getCurrentBag().update();
-//    }
 
     public Place getCurrentPlace(){
         return mMapInterface.getCurrentPlace();
@@ -487,17 +284,6 @@ public class GameInterface {
         return mMapInterface.getAllMinutes();
     }
 
-    private void addToBdAllGameValues(){
-        mPlayerInterface.addToBd();
-        mMapInterface.addToBd();
-        mResourceInterface.addToBd();
-    }
-
-    public void update(){
-        mPlayerInterface.update();
-        mMapInterface.update();
-    }
-
     public Collection<Location> getLocationList(){
         return mMapInterface.getAllLocation();
     }
@@ -510,8 +296,83 @@ public class GameInterface {
         return mMapInterface.getWayList();
     }
 
+
+
+
+    // RESOURCE INTERFACE
+
     public Resource getResource(UUID uuid){
         return mResourceInterface.getResource(uuid);
+    }
+
+
+
+
+    // OTHER INTERFACE
+
+    private List<Resource> exchangeResourceFromTwoBags(Bag bagOne, Bag bagTwo){
+        Iterator<Resource> iterator = bagOne.getResourceList().iterator();
+        List<Resource> excessResourceList = new LinkedList<>();
+
+        while (iterator.hasNext()){
+            Resource resource = iterator.next();
+            if (bagTwo.getFreeSpace() != 0) {
+                resource.addOwner(bagTwo, null);
+            } else {
+                excessResourceList.add(resource);
+            }
+        }
+
+        bagOne.setResourceList(new LinkedList<Resource>());
+        bagOne.setResourceUUIDList(new HashSet<UUID>());
+
+        return excessResourceList;
+    }
+
+
+
+
+    // GET-SET METHODS
+
+    public void setResourceInterface(ResourceInterface resourceInterface){
+        mResourceInterface = resourceInterface;
+    }
+
+    public ResourceInterface getResourceInterface(){
+        return mResourceInterface;
+    }
+
+    public MapInterface getMapInterface() {
+        return mMapInterface;
+    }
+
+    public void setMapInterface(MapInterface mapInterface) {
+        mMapInterface = mapInterface;
+    }
+
+    public PlayerInterface getPlayerInterface() {
+        return mPlayerInterface;
+    }
+
+    public void setPlayerInterface(PlayerInterface playerInterface) {
+        mPlayerInterface = playerInterface;
+    }
+
+
+
+
+    // CRUD METHODS
+
+
+    private void addToBdAllGameValues(){
+        mPlayerInterface.addToBd();
+        mMapInterface.addToBd();
+        mResourceInterface.addToBd();
+    }
+
+    public void update(){
+        mPlayerInterface.update();
+        mMapInterface.update();
     }
 
     public static final String BECAUSE_OF_FOOD = "Вы умерли от голода";

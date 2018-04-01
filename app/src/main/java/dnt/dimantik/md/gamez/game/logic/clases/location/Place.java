@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
+import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
 import dnt.dimantik.md.gamez.game.logic.clases.BDInterface;
 
@@ -15,7 +15,7 @@ import dnt.dimantik.md.gamez.game.logic.clases.BDInterface;
  * Created by dimantik on 24.03.2018.
  */
 
-public class Place implements ResourceOwner, BDInterface {
+public class Place implements BDInterface, Owner {
 
     private String mName;
     private int mId;
@@ -141,12 +141,21 @@ public class Place implements ResourceOwner, BDInterface {
 
 
     @Override
-    public boolean putResource(Resource resource) {
-        if (resource == null){
+    public boolean putResource(Resource resource, String flag) {
+        if (!isPossibleToPut(resource, flag)){
             return false;
         }
         mResourceList.add(resource);
         mResourceUUIDList.add(resource.getId());
+        update();
+        return true;
+    }
+
+    @Override
+    public boolean isPossibleToPut(Resource resource, String flag) {
+        if (resource == null){
+            return false;
+        }
         return true;
     }
 
@@ -156,6 +165,7 @@ public class Place implements ResourceOwner, BDInterface {
             return;
         }
         mResourceUUIDList.remove(resource.getId());
+        update();
     }
 
     @Override

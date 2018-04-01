@@ -12,10 +12,12 @@ import java.util.UUID;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.bag.fragment.BagFragment;
+import dnt.dimantik.md.gamez.controllers.dialogs.ShowBagDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowClothesDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowImportantResourceDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowTransportDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowWeaponDialog;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Clothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.ImportantResource;
@@ -88,8 +90,13 @@ public class Assistant {
         return (width-40)/4;
     }
 
-    public static DialogFragment getFragmentForShowReaource(Resource resource, String phase){
+    public static DialogFragment getFragmentForShowResource(Resource resource, String phase){
         DialogFragment dialog = null;
+
+        if (resource == null) {
+            return null;
+        }
+
         if (resource instanceof ImportantResource){
             dialog = ShowImportantResourceDialog.getInstance(resource.getId(), phase);
         } else if (resource instanceof Clothes){
@@ -98,7 +105,10 @@ public class Assistant {
             dialog = ShowWeaponDialog.getInstance(resource.getId().toString(), phase);
         } else if (resource instanceof Transport){
             dialog = ShowTransportDialog.getInstance(resource.getId().toString(), phase);
+        } else if (resource instanceof Bag){
+            dialog = ShowBagDialog.getInstance(resource.getId().toString(), phase);
         }
+
         return dialog;
     }
 }

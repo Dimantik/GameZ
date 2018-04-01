@@ -160,7 +160,7 @@ public class ExchangeResourceFragment extends Fragment implements View.OnClickLi
         String message = "Мой рюкзак " + mFirstSet.size() + "/" + mGameInterface.getPlayerBag().getCapacity();
         mMyResourcesTitle.setText(message);
         if (mExchangeType.equals(EXCHANGE_PLAYER_BAG_TRANSPORT_BAG)){
-            message = "Багажник (" + mSecondSet.size() + ")";
+            message = "Багажник (" + mSecondSet.size() + "/ " + mGameInterface.getPlayerTransport().getBag().getCapacity() + ")";
             mOtherResourcesTitle.setText(message);
         } else if (mExchangeType.equals(EXCHANGE_PLAYER_BAG_FIND_RESOURCE_LIST)){
             message = "Найденные ресурсы (" + mSecondSet.size() + ")";
@@ -214,15 +214,15 @@ public class ExchangeResourceFragment extends Fragment implements View.OnClickLi
     }
 
     public boolean putIn(){
-        return mGameInterface.addResourceListToPlayerBag(mToFirstSet);
+        return mGameInterface.addResourceListToPlayerBag(mToFirstSet, null);
     }
 
     public boolean putOut(){
         if (mExchangeType.equals(EXCHANGE_PLAYER_BAG_FIND_RESOURCE_LIST)){
-            mGameInterface.addResourceListInCurrentPlace(mToSecondSet);
+            mGameInterface.addResourceListToCurrentPlace(mToSecondSet, null);
             return true;
         } else if (mExchangeType.equals(EXCHANGE_PLAYER_BAG_TRANSPORT_BAG)) {
-            return mGameInterface.addResourceListToPlayerTransportBag(mToSecondSet);
+            return mGameInterface.addResourceListToPlayerTransportBag(mToSecondSet, null);
         }
         return false;
     }
@@ -303,7 +303,8 @@ public class ExchangeResourceFragment extends Fragment implements View.OnClickLi
                 }
             }
 
-            DialogFragment dialog = Assistant.getFragmentForShowReaource(mResource, phase);
+            Log.i("TAG", mResource.getName());
+            DialogFragment dialog = Assistant.getFragmentForShowResource(mResource, phase);
             dialog.setTargetFragment(ExchangeResourceFragment.this, REQUEST_SHOW_RESOURCE);
             dialog.show(getFragmentManager(), SHOW_RESOURCE);
         }

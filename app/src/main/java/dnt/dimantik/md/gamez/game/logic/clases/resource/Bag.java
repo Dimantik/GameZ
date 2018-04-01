@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
-import dnt.dimantik.md.gamez.game.logic.clases.EquipmentOwner;
-import dnt.dimantik.md.gamez.game.logic.clases.ResourceOwner;
 import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 
 
@@ -17,13 +15,13 @@ import dnt.dimantik.md.gamez.game.logic.clases.Owner;
  * Created by dimantik on 11/16/17.
  */
 
-public class Bag extends Resource implements ResourceOwner {
+public class Bag extends Resource implements Owner {
 
     private int mCapacity;
     private List<Resource> mResourceList;
     private Set<UUID> mResourceUUIDList;
 
-    private EquipmentOwner mPlayerOwner;
+    private Owner mPlayerOwner;
 
     public Bag(String name, String assetDrawableName, int capacity) {
         this(UUID.randomUUID(), name, assetDrawableName, capacity);
@@ -117,59 +115,31 @@ public class Bag extends Resource implements ResourceOwner {
         mResourceUUIDList.add(uuid);
     }
 
-
-    public void addPlayerOwner(EquipmentOwner playerOwner){
-        deleteOwner();
-        mPlayerOwner = playerOwner;
-        mPlayerOwner.addCurrentBag(this);
-    }
-
-    public Owner deletePlayerOwner(){
-        if (mPlayerOwner != null){
-            mPlayerOwner.deleteCurrentBag(this);
-            Owner owner = mPlayerOwner;
-            mPlayerOwner = null;
-            return owner;
-        }
-        return null;
-    }
-
-    public Owner getPlayerOwner() {
-        return mPlayerOwner;
-    }
-
     @Override
-    public boolean addOwner(ResourceOwner owner) {
-        if (mPlayerOwner == null){
-            return super.addOwner(owner);
-        } else {
-            boolean result = owner.putResource(this);
-            if (result){
-                mPlayerOwner.deleteCurrentBag(this);
-                mPlayerOwner = null;
-                mOwner = owner;
-                return true;
-            }
+    public boolean putResource(Resource resource, String flag) {
+        if (!isPossibleToPut(resource, flag)){
             return false;
         }
+        if (resource instanceof FireArms) {
+            if (addWeapons((Weapon) resource)){
+                resource.update();
+                return true;
+            }
+        }
+        mResourceUUIDList.add(resource.getId());
+        mResourceList.add(resource);
+        update();
+        return true;
     }
 
     @Override
-    public boolean putResource(Resource resource) {
+    public boolean isPossibleToPut(Resource resource, String flag) {
         if (resource == null){
             return false;
         }
         if (mResourceList.size() >= mCapacity){
             return false;
         }
-        if (resource instanceof FireArms) {
-            if (addWeapons((Weapon) resource)){
-                update();
-                return true;
-            }
-        }
-        mResourceUUIDList.add(resource.getId());
-        mResourceList.add(resource);
         return true;
     }
 

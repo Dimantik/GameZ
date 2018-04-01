@@ -24,6 +24,7 @@ import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
 import dnt.dimantik.md.gamez.game.logic.GameInterface;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Clothes;
+import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**
  * Created by dimantik on 1/20/18.
@@ -97,6 +98,9 @@ public class ShowClothesDialog extends DialogFragment implements Showable{
                 setupIfInFindResourceList();
                 break;
         }
+
+        ImageView imageView = (ImageView)mView.findViewById(R.id.resource_image);
+        Assistant.fillImage(getContext(), imageView, mClothes.getAssertDrawable());
     }
 
     private void setupIfCurrent(){
@@ -214,7 +218,7 @@ public class ShowClothesDialog extends DialogFragment implements Showable{
     }
 
     private boolean putInPlayerBag(){
-        boolean result = mGameInterface.addResourceToPlayerBag(mClothes);
+        boolean result = mGameInterface.addResourceToPlayerBag(mClothes, null);
         if (result){
             setToUpdate();
         }
@@ -223,7 +227,7 @@ public class ShowClothesDialog extends DialogFragment implements Showable{
     }
 
     private boolean putInTransport(){
-        boolean result = mGameInterface.addResourceToPlayerTransportBag(mClothes);
+        boolean result = mGameInterface.addResourceToPlayerTransportBag(mClothes, null);
         if (result){
             setToUpdate();
         }
@@ -232,7 +236,7 @@ public class ShowClothesDialog extends DialogFragment implements Showable{
     }
 
     private void putInResourceListInCurrentPlace(){
-        mGameInterface.addResourceInCurrentPlace(mClothes);
+        mGameInterface.addResourceToCurrentPlace(mClothes, null);
         setToUpdate();
         getDialog().cancel();
     }

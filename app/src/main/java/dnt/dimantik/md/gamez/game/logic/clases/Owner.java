@@ -8,5 +8,9 @@ import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
 
 public interface Owner {
 
+    boolean putResource(Resource resource, String flag);
+    boolean isPossibleToPut(Resource resource, String flag);
+    void deleteResource(Resource resource);
+    void update();
 
 }

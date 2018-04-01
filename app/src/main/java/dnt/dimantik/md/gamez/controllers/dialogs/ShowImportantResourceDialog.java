@@ -1,5 +1,6 @@
 package dnt.dimantik.md.gamez.controllers.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -142,8 +143,7 @@ public class ShowImportantResourceDialog extends DialogFragment implements Showa
         mFirstActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGameInterface.upImportantIndicator(mImportantResource);
-                update();
+                useResource();
             }
         });
 
@@ -160,22 +160,29 @@ public class ShowImportantResourceDialog extends DialogFragment implements Showa
         }
     }
 
+    private void useResource(){
+        mGameInterface.upImportantIndicator(mImportantResource);
+        if (mImportantResource.getQuantity() <= 0){
+            setUpdate();
+            getDialog().cancel();
+        } else {
+            update();
+        }
+    }
+
     private void setButtonListenerIfInBag(){
-        mThirdActButton.setText("Выкинуть");
+        mThirdActButton.setText("Выбросить");
         mThirdActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGameInterface.addResourceInCurrentPlace(mImportantResource);
+                throwOut();
             }
         });
         mSecondActButton.setText("Положить в машину");
         mSecondActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = mGameInterface.addResourceToPlayerTransportBag(mImportantResource);
-                if (!result){
-                    showMessage();
-                }
+                putInTransportBag();
             }
         });
     }
@@ -185,17 +192,14 @@ public class ShowImportantResourceDialog extends DialogFragment implements Showa
         mThirdActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGameInterface.addResourceInCurrentPlace(mImportantResource);
+                throwOut();
             }
         });
-        mSecondActButton.setText("Положить в рюкзак");
+        mSecondActButton.setText("Положить в сумку");
         mSecondActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = mGameInterface.addResourceToPlayerBag(mImportantResource);
-                if (!result){
-                    showMessage();
-                }
+                putInBag();
             }
         });
     }
@@ -205,26 +209,54 @@ public class ShowImportantResourceDialog extends DialogFragment implements Showa
         mSecondActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = mGameInterface.addResourceToPlayerBag(mImportantResource);
-                if (!result){
-                    showMessage();
-                }
+               putInBag();
             }
         });
         mThirdActButton.setText("Положить в машину");
         mThirdActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = mGameInterface.addResourceToPlayerTransportBag(mImportantResource);
-                if (!result){
-                    showMessage();
-                }
+                putInTransportBag();
             }
         });
     }
 
+    private void throwOut(){
+        mGameInterface.addResourceToCurrentPlace(mImportantResource, null);
+        setUpdate();
+        getDialog().cancel();
+    }
+
+    private void putInTransportBag(){
+        boolean result = mGameInterface.addResourceToPlayerTransportBag(mImportantResource, null);
+        if (result){
+            setUpdate();
+            getDialog().cancel();
+        } else {
+            showMessage();
+        }
+    }
+
+    private void putInBag(){
+        boolean result = mGameInterface.addResourceToPlayerBag(mImportantResource, null);
+        if (result){
+            setUpdate();
+            getDialog().cancel();
+        } else {
+            showMessage();
+        }
+    }
+
     public void showMessage(){
         Toast.makeText(getContext(), "Недостаточно места!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setUpdate(){
+        if (getTargetFragment() == null){
+            return;
+        }
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
     }
 
 }
