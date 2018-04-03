@@ -28,6 +28,7 @@ public class PlayerDbSchema {
             public static final String CURRENT_WEAPON_FIRST = "current_weapon_first";
             public static final String CURRENT_WEAPON_SECOND = "current_weapon_second";
             public static final String CURRENT_BAG = "current_bag";
+            public static final String WITHOUT_BAG = "without_bag";
             public static final String CURRENT_TRANSPORT = "current_transport";
         }
     }

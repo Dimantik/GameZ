@@ -24,11 +24,9 @@ public class FireArmsCursorWrapper extends CursorWrapper {
         String name = getString(getColumnIndex(Cols.NAME));
         String imageName = getString(getColumnIndex(Cols.IMAGE_NAME));
         String type = getString(getColumnIndex(Cols.TYPE));
-        String cartridgesUUID = getString(getColumnIndex(Cols.CARTRIDGES));
         int power = getInt(getColumnIndex(Cols.POWER));
 
         FireArms fireArms = new FireArms(UUID.fromString(uuidString), name, power, imageName, FireArms.Type.valueOf(type));
-        fireArms.setCartridgesUUID(Assistant.convertToUUID(cartridgesUUID));
 
         return fireArms;
     }

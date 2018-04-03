@@ -17,7 +17,6 @@ public class FireArmsDbSchema {
             public static final String IMAGE_NAME = "image_name";
             public static final String POWER = "power";
             public static final String TYPE = "type";
-            public static final String CARTRIDGES = "cartridges";
         }
     }
 }

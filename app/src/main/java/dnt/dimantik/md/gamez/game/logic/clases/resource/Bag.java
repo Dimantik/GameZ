@@ -1,5 +1,7 @@
 package dnt.dimantik.md.gamez.game.logic.clases.resource;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,21 +34,6 @@ public class Bag extends Resource implements Owner {
         mCapacity = capacity;
         mResourceList = new LinkedList<>();
         mResourceUUIDList = new HashSet<>();
-    }
-
-    private boolean addWeapons(Weapon weapon){
-        if (weapon instanceof FireArms){
-            for (Resource resource : mResourceList){
-                if (resource instanceof FireArms){
-                    if (((FireArms) weapon).getType().equals(((FireArms)resource).getType())){
-                        ((FireArms) resource).upCartridges(((FireArms) weapon).getCartridges());
-                        weapon.deleteOwner();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public List<Food> getAllFoodResource(){
@@ -119,12 +106,6 @@ public class Bag extends Resource implements Owner {
     public boolean putResource(Resource resource, String flag) {
         if (!isPossibleToPut(resource, flag)){
             return false;
-        }
-        if (resource instanceof FireArms) {
-            if (addWeapons((Weapon) resource)){
-                resource.update();
-                return true;
-            }
         }
         mResourceUUIDList.add(resource.getId());
         mResourceList.add(resource);

@@ -81,14 +81,12 @@ public class BagFragment extends Fragment {
 
     private void firstInitialize() {
         mGameInterface = ((MainActivity)getActivity()).getGameInterface();
-        mBag = mGameInterface.getPlayer().getCurrentBag();
+        mBag = mGameInterface.getPlayerBag();
 
         mCapacityTextView = (TextView)mView.findViewById(R.id.bag_capacity);
 
         mBagRecyclerView = (RecyclerView) mView.findViewById(R.id.bag_recycler_view);
         mBagRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-
-        updateUI();
     }
 
     @Override
@@ -111,19 +109,14 @@ public class BagFragment extends Fragment {
 
     private void updateUI(){
         String message;
-        if (mGameInterface.getPlayerBag() == null){
-            message = "У вас нет рюкзака!";
-            mCapacityTextView.setText(message);
+        message = mBag.getName() + "(" + mBag.getEngagedSpace() + "/" + mBag.getCapacity() + ")";
+        mCapacityTextView.setText(message);
+        if (mBagAdapter == null){
+            mBagAdapter = new ResourceBagAdapter(mGameInterface.getPlayerBag().getResourceList());
+            mBagRecyclerView.setAdapter(mBagAdapter);
         } else {
-            message = mBag.getName() + "(" + mBag.getEngagedSpace() + "/" + mBag.getCapacity() + ")";
-            mCapacityTextView.setText(message);
-            if (mBagAdapter == null){
-                mBagAdapter = new ResourceBagAdapter(mGameInterface.getPlayer().getCurrentBag().getResourceList());
-                mBagRecyclerView.setAdapter(mBagAdapter);
-            } else {
-                mBagAdapter.setResourceList(mGameInterface.getPlayer().getCurrentBag().getResourceList());
-                mBagAdapter.notifyDataSetChanged();
-            }
+            mBagAdapter.setResourceList(mGameInterface.getPlayerBag().getResourceList());
+            mBagAdapter.notifyDataSetChanged();
         }
     }
 

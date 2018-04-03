@@ -122,7 +122,8 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
         mFirstActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGameInterface.addResourceToCurrentPlace(mGameInterface.getPlayerTransport(), null);
+                mGameInterface.addResourceToCurrentPlace(mTransport, null);
+                setToUpdate();
                 getDialog().cancel();
             }
         });

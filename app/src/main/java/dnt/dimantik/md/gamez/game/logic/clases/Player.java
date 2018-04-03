@@ -50,6 +50,9 @@ public class Player implements BDInterface, Owner {
     private Bag mCurrentBag;
     private UUID mCurrentBagUUID;
 
+    private Bag mWithoutBag;
+    private UUID mWithoutBagUUID;
+
     Player(UUID uuid, String name){
         mUUID = uuid;
         mName = name;
@@ -263,6 +266,29 @@ public class Player implements BDInterface, Owner {
         }
     }
 
+    public void setWithoutBag(Bag withoutBag, boolean setUUID) {
+        mWithoutBag = withoutBag;
+        if (setUUID){
+            if (withoutBag == null){
+                mWithoutBagUUID = null;
+            } else {
+                mWithoutBagUUID = mWithoutBag.getId();
+            }
+        }
+    }
+
+    public Bag getWithoutBag() {
+        return mWithoutBag;
+    }
+
+    public UUID getWithoutBagUUID() {
+        return mWithoutBagUUID;
+    }
+
+    public void setWithoutBagUUID(UUID withoutBagUUID) {
+        mWithoutBagUUID = withoutBagUUID;
+    }
+
     public UUID getCurrentHeadClothesUUID() {
         return mCurrentHeadClothesUUID;
     }
@@ -354,6 +380,9 @@ public class Player implements BDInterface, Owner {
     public final static String FIRST_SLOT = "FIRST";
     public final static String SECOND_SLOT = "SECOND";
 
+    public final static String WITHOUT_BAG = "WITHOUT_BAG";
+    public final static String WITH_BAG = "WITH_BAG";
+
     @Override
     public boolean putResource(Resource resource, String flag) {
         if (!isPossibleToPut(resource, flag)){
@@ -383,7 +412,17 @@ public class Player implements BDInterface, Owner {
             }
 
         } else if (resource instanceof Bag) {
-            setCurrentBag((Bag) resource, true);
+            if (flag == null || (!flag.equals(WITH_BAG) && !flag.equals(WITHOUT_BAG))){
+                return false;
+            }
+            switch (flag){
+                case WITH_BAG:
+                    setCurrentBag((Bag) resource, true);
+                    break;
+                case WITHOUT_BAG:
+                    setWithoutBag((Bag) resource, true);
+                    break;
+            }
         } else if (resource instanceof Transport) {
             setCurrentTransport((Transport) resource, true);
         } else {
@@ -424,9 +463,9 @@ public class Player implements BDInterface, Owner {
                 setCurrentSecondWeapon(null, true);
             }
         } else if (resource instanceof Bag) {
-            setCurrentBag((Bag) resource, true);
+            setCurrentBag(null, true);
         } else if (resource instanceof Transport) {
-            setCurrentTransport((Transport) resource, true);
+            setCurrentTransport(null, true);
         }
 
         update();

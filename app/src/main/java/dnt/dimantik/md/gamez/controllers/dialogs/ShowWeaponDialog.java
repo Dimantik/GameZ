@@ -75,7 +75,7 @@ public class ShowWeaponDialog extends DialogFragment implements Showable{
         if (mWeapon instanceof FireArms){
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_4_button, null, false);
             TextView secondCharacteristic = (TextView)mView.findViewById(R.id.second_characteristic);
-            String message = "Колличество патронов:  " + ((FireArms)mWeapon).getCartridgesQuantity();
+            String message = "Колличество патронов:  " + mGameInterface.getCartridgesQuantityInPlayerBagForType(((FireArms)mWeapon).getType());
             secondCharacteristic.setText(message);
         } else {
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_1_text_4_button, null, false);

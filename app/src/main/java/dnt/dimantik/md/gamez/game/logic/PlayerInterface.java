@@ -10,8 +10,10 @@ import dnt.dimantik.md.gamez.game.logic.clases.Owner;
 import dnt.dimantik.md.gamez.game.logic.clases.Player;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Drug;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.FeetClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Food;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.HeadClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.LegsClothes;
@@ -145,16 +147,50 @@ public class PlayerInterface {
     // ИНТЕРФЕЙС СУМКИ
 
     public boolean addResourceToPlayerBag(Resource resource, String flag){
-        if (mPlayer.getCurrentBag().isPossibleToPut(resource, flag)) {
+        if (resource instanceof Cartridges) {
+            return addCartridgesToPlayerBag((Cartridges) resource, flag);
+        }
+        if (getPlayerBag().isPossibleToPut(resource, flag)) {
             resource.deleteOwner();
-            resource.addOwner(mPlayer.getCurrentBag(), flag);
+            resource.addOwner(getPlayerBag(), flag);
             return true;
         }
         return false;
     }
 
+    private boolean addCartridgesToPlayerBag(Cartridges cartridges, String flag){
+        for (Resource resource : getResourceListFromPlayerBag()){
+            if (resource instanceof Cartridges){
+                Cartridges cartridgesInBag = (Cartridges) resource;
+                if (cartridgesInBag.getType() == cartridges.getType() && cartridgesInBag.getQuantity() < GameSettings.QUANTITY_CARDRIDGES_IN_ONE_RESOURCE){
+                    if (cartridgesInBag.getQuantity() + cartridges.getQuantity() <= GameSettings.QUANTITY_CARDRIDGES_IN_ONE_RESOURCE){
+                        cartridgesInBag.upQuantity(cartridges.getQuantity());
+                        cartridgesInBag.update();
+                        cartridges.deleteOwner();
+                        cartridges.delete();
+                        return true;
+                    } else {
+                        int difference = GameSettings.QUANTITY_CARDRIDGES_IN_ONE_RESOURCE - cartridgesInBag.getQuantity();
+                        cartridgesInBag.setQuantity(GameSettings.QUANTITY_CARDRIDGES_IN_ONE_RESOURCE);
+                        cartridgesInBag.update();
+                        cartridges.downQuantity(difference);
+                        cartridges.update();
+                        break;
+                    }
+                }
+            }
+        }
+        if (getPlayerBag().isPossibleToPut(cartridges, flag)) {
+            cartridges.deleteOwner();
+            cartridges.addOwner(getPlayerBag(), flag);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean addResourceListToPlayerBag(List<Resource> resourceList, String flag){
-        if (mPlayer.getCurrentBag().getFreeSpace() < resourceList.size()){
+        if (getPlayerBag().getFreeSpace() < resourceList.size()){
             return false;
         } else {
             for (Resource resource : resourceList){
@@ -165,6 +201,9 @@ public class PlayerInterface {
     }
 
     public boolean addResourceToPlayerTransportBag(Resource resource, String flag){
+        if (getPlayerTransport() == null){
+            return false;
+        }
         resource.deleteOwner();
         return resource.addOwner(mPlayer.getCurrentTransport().getBag(), flag);
     }
@@ -181,65 +220,71 @@ public class PlayerInterface {
     }
 
     public List<Resource> getResourceListFromPlayerBag(){
-        return mPlayer.getCurrentBag().getResourceList();
+        return getPlayerBag().getResourceList();
     }
 
     public List<Resource> getResourceListFromPlayerTransportBag(){
         return mPlayer.getCurrentTransport().getBag().getResourceList();
     }
 
-    public Bag getPlayerBag(){
-        return mPlayer.getCurrentBag();
+    public int getCartridgesQuantityForSingleType(FireArms.Type type){
+        int quantity = 0;
+        for (Resource resource : getPlayerBag().getResourceList()){
+            if (resource instanceof Cartridges){
+                Cartridges cartridges = (Cartridges) resource;
+                if (cartridges.getType() == type){
+                    quantity += cartridges.getQuantity();
+                }
+            }
+        }
+        return quantity;
     }
-
-    public Transport getPlayerTransport(){
-        return mPlayer.getCurrentTransport();
-    }
-
-
-
 
 
 
 
     // ИНТЕРФЕЙС СНАРЯЖЕНИЯ
 
-    public HeadClothes getCurrentHeadClothes(){
+    public HeadClothes getPlayerHeadClothes(){
         return mPlayer.getCurrentHeadClothes();
     }
 
-    public BodyClothes getCurrentBodyClothes(){
+    public BodyClothes getPlayerBodyClothes(){
         return mPlayer.getCurrentBodyClothes();
     }
 
-    public LegsClothes getCurrentLegsClothes(){
+    public LegsClothes getPlayerLegsClothes(){
         return mPlayer.getCurrentLegsClothes();
     }
 
-    public FeetClothes getCurrentFeetClothes(){
+    public FeetClothes getPlayerFeetClothes(){
         return mPlayer.getCurrentFeetClothes();
     }
 
-    public Bag getCurrentBag(){
-        return mPlayer.getCurrentBag();
+    public Bag getPlayerBag(){
+        if (mPlayer.getCurrentBag() != null){
+            return mPlayer.getCurrentBag();
+        } else {
+            return mPlayer.getWithoutBag();
+        }
     }
 
-    public Transport getCurrentTransport(){
+    public Transport getPlayerTransport(){
         return mPlayer.getCurrentTransport();
     }
 
-    public Weapon getCurrentFirstWeapon(){
+    public Weapon getPlayerFirstWeapon(){
         return mPlayer.getCurrentFirstWeapon();
     }
 
-    public Weapon getCurrentSecondWeapon(){
+    public Weapon getPlayerSecondWeapon(){
         return mPlayer.getCurrentSecondWeapon();
     }
 
 
     public void setCurrentHeadClothes(HeadClothes newHeadClothes){
         Owner ownerNewHeadClothes = newHeadClothes.deleteOwner();
-        HeadClothes oldHeadClothes = getCurrentHeadClothes();
+        HeadClothes oldHeadClothes = getPlayerHeadClothes();
         if (oldHeadClothes != null){
             oldHeadClothes.deleteOwner();
             oldHeadClothes.addOwner(ownerNewHeadClothes, null);
@@ -249,7 +294,7 @@ public class PlayerInterface {
 
     public void setCurrentBodyClothes(BodyClothes newBodyClothes){
         Owner ownerNewBodyClothes = newBodyClothes.deleteOwner();
-        BodyClothes oldBodyClothes = getCurrentBodyClothes();
+        BodyClothes oldBodyClothes = getPlayerBodyClothes();
         if (oldBodyClothes != null){
             oldBodyClothes.deleteOwner();
             oldBodyClothes.addOwner(ownerNewBodyClothes, null);
@@ -258,7 +303,7 @@ public class PlayerInterface {
     }
 
     public void setCurrentLegsClothes(LegsClothes newLegsClothes){
-        LegsClothes oldLegsClothes = getCurrentLegsClothes();
+        LegsClothes oldLegsClothes = getPlayerLegsClothes();
         Owner ownerNewLegsClothes = newLegsClothes.deleteOwner();
         if (oldLegsClothes != null){
             oldLegsClothes.deleteOwner();
@@ -268,7 +313,7 @@ public class PlayerInterface {
     }
 
     public void setCurrentFeetClothes(FeetClothes newFeetClothes){
-        FeetClothes oldFeetClothes = getCurrentFeetClothes();
+        FeetClothes oldFeetClothes = getPlayerFeetClothes();
         Owner ownerNewLegsClothes = newFeetClothes.deleteOwner();
         if (oldFeetClothes != null){
             oldFeetClothes.deleteOwner();
@@ -278,7 +323,7 @@ public class PlayerInterface {
     }
 
     public void setCurrentFirstWeapon(Weapon newWeapon){
-        Weapon oldWeapon = getCurrentFirstWeapon();
+        Weapon oldWeapon = getPlayerFirstWeapon();
         Owner owner = newWeapon.deleteOwner();
         if (oldWeapon != null){
             oldWeapon.deleteOwner();
@@ -288,7 +333,7 @@ public class PlayerInterface {
     }
 
     public void setCurrentSecondWeapon(Weapon newWeapon){
-        Weapon oldWeapon = getCurrentSecondWeapon();
+        Weapon oldWeapon = getPlayerSecondWeapon();
         Owner owner = newWeapon.deleteOwner();
         if (oldWeapon != null){
             oldWeapon.deleteOwner();
@@ -298,21 +343,29 @@ public class PlayerInterface {
     }
 
     public void setCurrentTransport(Transport newTransport){
-        Transport oldTransport = getCurrentTransport();
+        Transport oldTransport = getPlayerTransport();
         Owner ownerNewTransport = newTransport.deleteOwner();
-        Owner ownerOldTransport = oldTransport.deleteOwner();
 
-        oldTransport.addOwner(ownerNewTransport, null);
-        newTransport.addOwner(ownerOldTransport, null);
+        if (oldTransport != null){
+            oldTransport.deleteOwner();
+            oldTransport.addOwner(ownerNewTransport, null);
+        }
+
+        newTransport.addOwner(mPlayer, null);
     }
 
     public void setCurrentBag(Bag newBag){
-        Bag oldBag = getCurrentBag();
+        Bag oldBag = getPlayerBag();
         Owner ownerNewBag = newBag.deleteOwner();
         Owner ownerOldBag = oldBag.deleteOwner();
 
-        oldBag.addOwner(ownerNewBag, null);
-        newBag.addOwner(ownerOldBag, null);
+        if (oldBag != mPlayer.getWithoutBag()){
+            oldBag.addOwner(ownerNewBag, null);
+        }
+
+        newBag.addOwner(ownerOldBag, Player.WITH_BAG);
+
+
     }
 
     //Снять текущую экипировку
@@ -394,11 +447,6 @@ public class PlayerInterface {
 
 
 
-
-
-    public List<Resource> getPlayerResourceListInBag(){
-        return mPlayer.getCurrentBag().getResourceList();
-    }
 
     public void deleteResourceFromBag(Resource resource){
         mPlayer.getCurrentBag().deleteResource(resource);

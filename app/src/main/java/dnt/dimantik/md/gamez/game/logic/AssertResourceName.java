@@ -41,13 +41,32 @@ public class AssertResourceName {
     public static final String LIQUID_2_IMG = "food/liquid_2_img.png";
     public static final String LIQUID_3_IMG = "food/liquid_3_img.png";
 
-    public static final String FIRE_ARMS_1_IMG = "ranged_weapons/ranged_weapon_1_img.png";
-    public static final String FIRE_ARMS_2_IMG = "ranged_weapons/ranged_weapon_2_img.png";
-    public static final String FIRE_ARMS_3_IMG = "ranged_weapons/ranged_weapon_3_img.png";
+    public static final String FIRE_ARMS_BOW_1_IMG = "ranged_weapons/ranged_weapon_bow_1_img.png";
+    public static final String FIRE_ARMS_BOW_2_IMG = "ranged_weapons/ranged_weapon_bow_2_img.png";
+    public static final String FIRE_ARMS_PISTOL_1_IMG = "ranged_weapons/ranged_weapon_pistol_1_img.png";
+    public static final String FIRE_ARMS_PISTOL_2_IMG = "ranged_weapons/ranged_weapon_pistol_2_img.png";
+    public static final String FIRE_ARMS_PISTOL_3_IMG = "ranged_weapons/ranged_weapon_pistol_3_img.png";
+    public static final String FIRE_ARMS_PISTOL_4_IMG = "ranged_weapons/ranged_weapon_pistol_4_img.png";
+    public static final String FIRE_ARMS_SHOT_GUN_1_IMG = "ranged_weapons/ranged_weapon_shot_gun_1_img.png";
+    public static final String FIRE_ARMS_SHOT_GUN_2_IMG = "ranged_weapons/ranged_weapon_shot_gun_2_img.png";
+    public static final String FIRE_ARMS_SUBMACHINE_GUN_1_IMG = "ranged_weapons/ranged_weapon_submachine_gun_1_img.png";
+    public static final String FIRE_ARMS_SUBMACHINE_GUN_2_IMG = "ranged_weapons/ranged_weapon_submachine_gun_2_img.png";
+    public static final String FIRE_ARMS_SUBMACHINE_GUN_3_IMG = "ranged_weapons/ranged_weapon_submachine_gun_3_img.png";
+    public static final String FIRE_ARMS_SUBMACHINE_GUN_4_IMG = "ranged_weapons/ranged_weapon_submachine_gun_4_img.png";
+    public static final String FIRE_ARMS_MACHINE_1_IMG = "ranged_weapons/ranged_weapon_machine_1_img.png";
+    public static final String FIRE_ARMS_MACHINE_2_IMG = "ranged_weapons/ranged_weapon_machine_2_img.png";
+    public static final String FIRE_ARMS_MACHINE_GUN_1_IMG = "ranged_weapons/ranged_weapon_machine_gun_1_img.png";
+    public static final String FIRE_ARMS_MACHINE_GUN_2_IMG = "ranged_weapons/ranged_weapon_machine_gun_2_img.png";
+    public static final String FIRE_ARMS_SNIPER_RIFLE_1_IMG = "ranged_weapons/ranged_weapon_sniper_rifle_1_img.png";
+    public static final String FIRE_ARMS_SNIPER_RIFLE_2_IMG = "ranged_weapons/ranged_weapon_sniper_rifle_2_img.png";
+    public static final String FIRE_ARMS_SNIPER_RIFLE_3_IMG = "ranged_weapons/ranged_weapon_sniper_rifle_3_img.png";
 
-    public static final String CARTRIDGES_1_IMG = "ranged_weapons/cartridges_1_img.png";
-    public static final String CARTRIDGES_2_IMG = "ranged_weapons/cartridges_2_img.png";
-    public static final String CARTRIDGES_3_IMG = "ranged_weapons/cartridges_3_img.png";
+    public static final String CARTRIDGES_PISTOL_IMG = "ranged_weapons/cartridges_pistol_img.png";
+    public static final String CARTRIDGES_SHOT_GUN_IMG = "ranged_weapons/cartridges_shot_gun_img.png";
+    public static final String CARTRIDGES_SUBMACHINE_GUN_IMG = "ranged_weapons/cartridges_submachine_gun_img.png";
+    public static final String CARTRIDGES_MACHINE_IMG = "ranged_weapons/cartridges_machine_img.png";
+    public static final String CARTRIDGES_MACHINE_GUN_IMG = "ranged_weapons/cartridges_machine_gun_img.png";
+    public static final String CARTRIDGES_SNIPER_RIFLE_IMG = "ranged_weapons/cartridges_sniper_rifle_img.png";
 
     public static final String STEEL_ARMS_1_IMG = "melee_weapons/steel_arms_1_img.png";
     public static final String STEEL_ARMS_2_IMG = "melee_weapons/steel_arms_2_img.png";

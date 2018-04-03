@@ -1,6 +1,7 @@
 package dnt.dimantik.md.gamez.game.logic.clases.resource;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.UUID;
 
@@ -74,6 +75,7 @@ public abstract class Resource implements BDInterface {
     }
 
     public boolean addOwner(Owner owner, String flag){
+        Log.i("TAG", "ADD");
         if (!owner.isPossibleToPut(this, flag)){
             return false;
         }

@@ -87,7 +87,6 @@ public class CreateTablesCommands {
                     FireArmsDbSchema.FireArmsTable.Cols.UUID + " TEXT, " +
                     FireArmsDbSchema.FireArmsTable.Cols.NAME + " TEXT, " +
                     FireArmsDbSchema.FireArmsTable.Cols.IMAGE_NAME + " TEXT, " +
-                    FireArmsDbSchema.FireArmsTable.Cols.CARTRIDGES + " TEXT, " +
                     FireArmsDbSchema.FireArmsTable.Cols.TYPE + " TEXT, " +
                     FireArmsDbSchema.FireArmsTable.Cols.POWER + " INTEGER)";
 
@@ -163,6 +162,7 @@ public class CreateTablesCommands {
                     PlayerDbSchema.PlayerTable.Cols.CURRENT_WEAPON_FIRST + " TEXT, " +
                     PlayerDbSchema.PlayerTable.Cols.CURRENT_WEAPON_SECOND + " TEXT, " +
                     PlayerDbSchema.PlayerTable.Cols.CURRENT_TRANSPORT + " TEXT, " +
+                    PlayerDbSchema.PlayerTable.Cols.WITHOUT_BAG + " TEXT, " +
                     PlayerDbSchema.PlayerTable.Cols.CURRENT_BAG + " TEXT)";
 
     public static final String SQL_CREATE_TABLE_STEEL_ARMS_COMMAND =

@@ -1,6 +1,7 @@
 package dnt.dimantik.md.gamez.game.logic;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,15 +37,11 @@ import static dnt.dimantik.md.gamez.game.logic.AssertResourceName.*;
 
 class GameCreator {
 
-    private static Map<UUID, Resource> sResourceMap;
-
     static void createNewGame(GameInterface gameInterface, String playerName){
         BDHelper.deleteGame();
-        sResourceMap = new HashMap<>();
         addNewMap(gameInterface);
         addNewResourceList(gameInterface);
         addNewPlayer(gameInterface, playerName);
-        Log.i("TAG", "PLAYER BAG SIZE - " + gameInterface.getPlayer().getCurrentBag().getResourceList().size() + "/" + gameInterface.getPlayer().getCurrentBag().getResourceUUIDList().size());
     }
 
     private static void addNewMap(GameInterface gameInterface){
@@ -487,6 +484,8 @@ class GameCreator {
     }
 
     private static void addNewPlayer(GameInterface gameInterface, String name){
+        Map<UUID, Resource> resourceMap = gameInterface.getResourceMap();
+
         Player player = new Player(name);
         player.setName(name);
         player.setEnergy(80);
@@ -494,45 +493,42 @@ class GameCreator {
         player.setSatiety(80);
         player.setThirst(80);
 
-        Bag bag = new Bag("Простой рюкзак", BAG_3_IMG, 5);
-        bag.addOwner(player, null);
-        sResourceMap.put(bag.getId(), bag);
+        Bag bag = new Bag("У вас нет рюкзака", "", 2);
+        bag.addOwner(player, Player.WITHOUT_BAG);
+        resourceMap.put(bag.getId(), bag);
 
         BodyClothes bathrobe = new BodyClothes("Кожанкаа", 1, BODY_CLOTHES_1_IMG);
         bathrobe.addOwner(player, null);
-        sResourceMap.put(bathrobe.getId(), bathrobe);
+        resourceMap.put(bathrobe.getId(), bathrobe);
 
         LegsClothes pajamas = new LegsClothes("Пижама", 1, LEGS_CLOTHES_1_IMG);
         pajamas.addOwner(player, null);
-        sResourceMap.put(pajamas.getId(), pajamas);
+        resourceMap.put(pajamas.getId(), pajamas);
 
         FeetClothes slippers = new FeetClothes("Кроссовки", 1, FEET_CLOTHES_1_IMG);
         slippers.addOwner(player, null);
-        sResourceMap.put(slippers.getId(), slippers);
+        resourceMap.put(slippers.getId(), slippers);
 
         HeadClothes hat = new HeadClothes("Кепка", 1, HEAD_CLOTHES_1_IMG);
         hat.addOwner(player, null);
-        sResourceMap.put(hat.getId(), hat);
+        resourceMap.put(hat.getId(), hat);
 
-        FireArms fireArms = new FireArms("Автомат", 5, FIRE_ARMS_3_IMG, FireArms.Type.MACHINE);
-        Cartridges cartridges = new Cartridges("Пули", CARTRIDGES_3_IMG, 100, FireArms.Type.MACHINE);
-        fireArms.setCartridges(cartridges, true);
+        FireArms fireArms = new FireArms("Автомат", 5, FIRE_ARMS_MACHINE_1_IMG, FireArms.Type.MACHINE);
 
         fireArms.addOwner(player, Player.FIRST_SLOT);
-        sResourceMap.put(fireArms.getId(), fireArms);
-        sResourceMap.put(cartridges.getId(), cartridges);
+        resourceMap.put(fireArms.getId(), fireArms);
 
         SteelArms steelArms = new SteelArms("Топор", 2, STEEL_ARMS_2_IMG);
         steelArms.addOwner(player, Player.SECOND_SLOT);
-        sResourceMap.put(steelArms.getId(), steelArms);
+        resourceMap.put(steelArms.getId(), steelArms);
 
         Bag bagTransport = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 20);
 
         Transport transport = new Transport("Военный джип", 0.05, 20, 1000, TRANSPORT_1_IMG);
         transport.setBag(bagTransport, true);
         transport.addOwner(player, null);
-        sResourceMap.put(bagTransport.getId(), bagTransport);
-        sResourceMap.put(transport.getId(), transport);
+        resourceMap.put(bagTransport.getId(), bagTransport);
+        resourceMap.put(transport.getId(), transport);
 
         Food food = new Food("Консервы", 100, FOOD_1_IMG);
         Liquid liquid = new Liquid("Бутылка воды", 100, LIQUID_3_IMG);
@@ -540,21 +536,22 @@ class GameCreator {
         food.addOwner(bag, null);
         liquid.addOwner(bag, null);
 
-        sResourceMap.put(food.getId(), food);
-        sResourceMap.put(liquid.getId(), liquid);
+        resourceMap.put(food.getId(), food);
+        resourceMap.put(liquid.getId(), liquid);
 
         Log.i("TAG", "Bag size - " + bag.getResourceList().size());
 
         PlayerInterface playerInterface = new PlayerInterface(player);
         gameInterface.setPlayerInterface(playerInterface);
 
-        ResourceInterface resourceInterface = new ResourceInterface(sResourceMap);
-        gameInterface.setResourceInterface(resourceInterface);
-
-        sResourceMap = null;
     }
 
     private static void addNewResourceList(GameInterface gameInterface){
+        Map<UUID, Resource> resourceMap = new HashMap<>();
+        ResourceInterface resourceInterface = new ResourceInterface(resourceMap);
+        gameInterface.setResourceInterface(resourceInterface);
+
+        Map<UUID, Resource> resourceMapToPuToPlace = new HashMap<>();
         //Создание массива с ресурсами
 
         //Создание локаций
@@ -570,111 +567,100 @@ class GameCreator {
         //Добавление воды
         for (int i = 0; i < 10; i++) {
             Liquid liquid = new Liquid("Бутылка воды", 10, LIQUID_1_IMG);
-            sResourceMap.put(liquid.getId(), liquid);
+            resourceMapToPuToPlace.put(liquid.getId(), liquid);
         }
 
         // Добавление еды
         for (int i = 0; i < 4; i++){
             Food food = new Food("Батончик", 10, FOOD_1_IMG);
-            sResourceMap.put(food.getId(), food);
+            resourceMapToPuToPlace.put(food.getId(), food);
             if (i < 1) {
                 food = new Food("Оленина", 70, FOOD_1_IMG);
-                sResourceMap.put(food.getId(), food);
+                resourceMapToPuToPlace.put(food.getId(), food);
             }
             if (i < 1){
                 food = new Food("Мясо кролика", 50, FOOD_2_IMG);
-                sResourceMap.put(food.getId(), food);
+                resourceMapToPuToPlace.put(food.getId(), food);
             }
             if (i < 1){
                 food = new Food("Мясо белки", 45, FOOD_2_IMG);
-                sResourceMap.put(food.getId(), food);
+                resourceMapToPuToPlace.put(food.getId(), food);
             }
             if (i < 3){
                 food = new Food("Картошка", 20, FOOD_1_IMG);
-                sResourceMap.put(food.getId(), food);
+                resourceMapToPuToPlace.put(food.getId(), food);
             }
             if (i < 4){
                 food = new Food("Сухари", 15, FOOD_1_IMG);
-                sResourceMap.put(food.getId(), food);
+                resourceMapToPuToPlace.put(food.getId(), food);
             }
         }
 
         // добавление лекарств
         for (int i = 0; i < 5; i++) {
             Drug drug = new Drug("Бинты", 10, DRUG_1_IMG);
-            sResourceMap.put(drug.getId(), drug);
+            resourceMapToPuToPlace.put(drug.getId(), drug);
             if (i < 2) {
                 drug = new Drug("Аптечка", 50, DRUG_2_IMG);
-                sResourceMap.put(drug.getId(), drug);
+                resourceMapToPuToPlace.put(drug.getId(), drug);
             }
             if (i < 1) {
                 drug = new Drug("Антибиотики", 30, DRUG_3_IMG);
-                sResourceMap.put(drug.getId(), drug);
+                resourceMapToPuToPlace.put(drug.getId(), drug);
             }
         }
 
         // добавление транспорта
         Bag bagTransport1 = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 20);
-        sResourceMap.put(bagTransport1.getId(), bagTransport1);
+        gameInterface.addResource(bagTransport1);
         Bag bagTransport2 = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 15);
-        sResourceMap.put(bagTransport2.getId(), bagTransport2);
+        gameInterface.addResource(bagTransport2);
         Bag bagTransport4 = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 5);
-        sResourceMap.put(bagTransport2.getId(), bagTransport2);
+        gameInterface.addResource(bagTransport4);
 
         Transport transport1 = new Transport("Военный джип", 0.05, 20, 1000, TRANSPORT_1_IMG);
         transport1.setBag(bagTransport1, true);
-        sResourceMap.put(transport1.getId(), transport1);
+        resourceMapToPuToPlace.put(transport1.getId(), transport1);
 
         Transport transport2 = new Transport("Легковой автомобиль", 0.1, 10, 1000, TRANSPORT_1_IMG);
         transport2.setBag(bagTransport2, true);
-        sResourceMap.put(transport2.getId(), transport2);
+        resourceMapToPuToPlace.put(transport2.getId(), transport2);
 
         Transport transport4 = new Transport("Мопед", 0.3, 1, 1000, TRANSPORT_1_IMG);
         transport4.setBag(bagTransport4, true);
-        sResourceMap.put(transport4.getId(), transport4);
+        resourceMapToPuToPlace.put(transport4.getId(), transport4);
 
         // добавление оружия
         for (int i = 0; i < 1/*4*/; i++) {
             if (i < 1){
-                FireArms fireArms = new FireArms("Автомат", 1, FIRE_ARMS_3_IMG, FireArms.Type.MACHINE_GUN);
-                Cartridges cartridges = new Cartridges("Пули", CARTRIDGES_3_IMG, 50, FireArms.Type.MACHINE_GUN);
-                fireArms.setCartridges(cartridges, true);
-                sResourceMap.put(fireArms.getId(), fireArms);
-                sResourceMap.put(cartridges.getId(), cartridges);
+                FireArms fireArms = new FireArms("Автомат", 1, FIRE_ARMS_MACHINE_1_IMG, FireArms.Type.MACHINE_GUN);
+                resourceMapToPuToPlace.put(fireArms.getId(), fireArms);
                 SteelArms steelArms = new SteelArms("Катана", 5, STEEL_ARMS_3_IMG);
-                sResourceMap.put(steelArms.getId(), steelArms);
-                System.out.print(fireArms.getCartridges());
+                resourceMapToPuToPlace.put(steelArms.getId(), steelArms);
             }
             if (i < 2){
-                FireArms fireArms = new FireArms("Пистолет-пулемет", 2, FIRE_ARMS_2_IMG, FireArms.Type.MACHINE);
-                Cartridges cartridges = new Cartridges("Пули", FIRE_ARMS_2_IMG, 50, FireArms.Type.MACHINE);
-                fireArms.setCartridges(cartridges, true);
-                sResourceMap.put(fireArms.getId(), fireArms);
-                sResourceMap.put(cartridges.getId(), cartridges);
+                FireArms fireArms = new FireArms("Пистолет-пулемет", 2, FIRE_ARMS_SUBMACHINE_GUN_1_IMG, FireArms.Type.MACHINE);
+                resourceMapToPuToPlace.put(fireArms.getId(), fireArms);
                 SteelArms steelArms = new SteelArms("Топор", 7, STEEL_ARMS_2_IMG);
-                sResourceMap.put(steelArms.getId(), steelArms);
-                System.out.print(fireArms.getCartridges());
+                resourceMapToPuToPlace.put(steelArms.getId(), steelArms);
             }
             if (i < 3){
-                FireArms fireArms = new FireArms("Пистолет", 3, FIRE_ARMS_1_IMG, FireArms.Type.PISTOL);
-                Cartridges cartridges = new Cartridges("Пули", FIRE_ARMS_1_IMG, 50, FireArms.Type.PISTOL);
-                fireArms.setCartridges(cartridges, true);
-                sResourceMap.put(fireArms.getId(), fireArms);
-                sResourceMap.put(cartridges.getId(), cartridges);
+                FireArms fireArms = new FireArms("Пистолет", 3, FIRE_ARMS_PISTOL_1_IMG, FireArms.Type.PISTOL);
+                resourceMapToPuToPlace.put(fireArms.getId(), fireArms);
                 SteelArms steelArms = new SteelArms("Нож", 8, STEEL_ARMS_1_IMG);
-                sResourceMap.put(steelArms.getId(), steelArms);
+                resourceMapToPuToPlace.put(steelArms.getId(), steelArms);
             }
         }
 
         // добавление пуль
 
         for (int i = 0; i < 3; i ++) {
-            Cartridges pistol = new Cartridges("Пули для пистолета", CARTRIDGES_1_IMG, 25, FireArms.Type.PISTOL);
-            Cartridges machine = new Cartridges("Пули для пистолета-пулемета", CARTRIDGES_2_IMG, 50, FireArms.Type.MACHINE);
-            Cartridges machineGun = new Cartridges("Пули для автомата", CARTRIDGES_3_IMG, 100, FireArms.Type.MACHINE_GUN);
-            sResourceMap.put(pistol.getId(), pistol);
-            sResourceMap.put(machine.getId(), machine);
-            sResourceMap.put(machineGun.getId(), machineGun);
+            Cartridges pistol = new Cartridges("Пули для пистолета", CARTRIDGES_PISTOL_IMG, 25, FireArms.Type.PISTOL);
+            Cartridges machine = new Cartridges("Пули для пистолета-пулемета", CARTRIDGES_SUBMACHINE_GUN_IMG, 50, FireArms.Type.MACHINE);
+            Cartridges machineGun = new Cartridges("Пули для автомата", CARTRIDGES_MACHINE_IMG, 100, FireArms.Type.MACHINE_GUN);
+            resourceMapToPuToPlace.put(pistol.getId(), pistol);
+            resourceMapToPuToPlace.put(machine.getId(), machine);
+            resourceMapToPuToPlace.put(machineGun.getId(), machineGun);
         }
 
         // добавление одежды
@@ -683,14 +669,14 @@ class GameCreator {
 
         for (int i = 0; i < 3; i++) {
             FeetClothes sneakers = new FeetClothes("Кроссовки", 2, FEET_CLOTHES_1_IMG);
-            sResourceMap.put(sneakers.getId(), sneakers);
+            resourceMapToPuToPlace.put(sneakers.getId(), sneakers);
             if (i < 2){
                 FeetClothes shoes = new FeetClothes("Ботинки", 5, FEET_CLOTHES_2_IMG);
-                sResourceMap.put(shoes.getId(), shoes);
+                resourceMapToPuToPlace.put(shoes.getId(), shoes);
             }
             if (i < 1){
                 FeetClothes ankleBoots = new FeetClothes("Берцы", 8, FEET_CLOTHES_3_IMG);
-                sResourceMap.put(ankleBoots.getId(), ankleBoots);
+                resourceMapToPuToPlace.put(ankleBoots.getId(), ankleBoots);
             }
         }
 
@@ -698,14 +684,14 @@ class GameCreator {
 
         for (int i = 0; i < 3; i++) {
             BodyClothes shirt = new BodyClothes("Кожанка", 2, BODY_CLOTHES_1_IMG);
-            sResourceMap.put(shirt.getId(), shirt);
+            resourceMapToPuToPlace.put(shirt.getId(), shirt);
             if (i < 2){
                 BodyClothes sweatshirt = new BodyClothes("Бронижелет гражданский", 5, BODY_CLOTHES_2_IMG);
-                sResourceMap.put(sweatshirt.getId(), sweatshirt);
+                resourceMapToPuToPlace.put(sweatshirt.getId(), sweatshirt);
             }
             if (i < 1){
                 BodyClothes jacket = new BodyClothes("Бронижелет военный", 8, BODY_CLOTHES_3_IMG);
-                sResourceMap.put(jacket.getId(), jacket);
+                resourceMapToPuToPlace.put(jacket.getId(), jacket);
             }
         }
 
@@ -713,14 +699,14 @@ class GameCreator {
 
         for (int i = 0; i < 3; i++) {
             LegsClothes shorts = new LegsClothes("Шорты", 2, LEGS_CLOTHES_1_IMG);
-            sResourceMap.put(shorts.getId(), shorts);
+            resourceMapToPuToPlace.put(shorts.getId(), shorts);
             if (i < 2){
                 LegsClothes pants = new LegsClothes("Брюки", 5, LEGS_CLOTHES_2_IMG);
-                sResourceMap.put(pants.getId(), pants);
+                resourceMapToPuToPlace.put(pants.getId(), pants);
             }
             if (i < 1){
                 LegsClothes camuflagePants = new LegsClothes("Камуфлированные штаны", 8, LEGS_CLOTHES_3_IMG);
-                sResourceMap.put(camuflagePants.getId(), camuflagePants);
+                resourceMapToPuToPlace.put(camuflagePants.getId(), camuflagePants);
             }
         }
 
@@ -728,39 +714,53 @@ class GameCreator {
 
         for (int i = 0; i < 3; i++) {
             HeadClothes cap = new HeadClothes("Бандама", 2, HEAD_CLOTHES_1_IMG);
-            sResourceMap.put(cap.getId(), cap);
+            resourceMapToPuToPlace.put(cap.getId(), cap);
             if (i < 2){
                 HeadClothes hat = new HeadClothes("Шапка", 5, HEAD_CLOTHES_2_IMG);
-                sResourceMap.put(hat.getId(), hat);
+                resourceMapToPuToPlace.put(hat.getId(), hat);
             }
             if (i < 1){
                 HeadClothes helmet = new HeadClothes("Каска", 8, HEAD_CLOTHES_3_IMG);
-                sResourceMap.put(helmet.getId(), helmet);
+                resourceMapToPuToPlace.put(helmet.getId(), helmet);
             }
         }
 
         List<Place> placeList = new ArrayList<>(gameInterface.getPlaceList());
 
-        for (Resource resource : sResourceMap.values()){
+        for (Resource resource : resourceMapToPuToPlace.values()){
             int placeRandom = (int)((Math.random()*(gameInterface.getPlaceList().size())));
             Place place = placeList.get(placeRandom);
             resource.addOwner(place, null);
         }
 
-        Bag bagTransportTest = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 2);
-        sResourceMap.put(bagTransportTest.getId(), bagTransportTest);
+        Bag bagTransportTest = new Bag("Багажник", AssertResourceName.BAG_TRANSPORT_IMG, 20);
+        gameInterface.addResource(bagTransportTest);
 
         Transport transportTest = new Transport("Военный джип", 0.05, 20, 1000, TRANSPORT_1_IMG);
         transportTest.setBag(bagTransportTest, true);
-        sResourceMap.put(transportTest.getId(), transportTest);
+        gameInterface.addResource(transportTest);
 
         Bag bagTest = new Bag("Мал сумка", AssertResourceName.BAG_1_IMG, 3);
-        sResourceMap.put(bagTest.getId(), bagTest);
+        gameInterface.addResource(bagTest);
 
         Place place = gameInterface.getCurrentPlace();
 
         transportTest.addOwner(place, null);
         bagTest.addOwner(place, null);
+
+
+        Cartridges c1 = new Cartridges("Пули для пистолета", CARTRIDGES_PISTOL_IMG, 25, FireArms.Type.PISTOL);
+        Cartridges c2 = new Cartridges("Пули для пистолета", CARTRIDGES_PISTOL_IMG, 25, FireArms.Type.PISTOL);
+        Cartridges c3 = new Cartridges("Пули для пистолета", CARTRIDGES_PISTOL_IMG, 25, FireArms.Type.PISTOL);
+        gameInterface.addResource(c1);
+        gameInterface.addResource(c2);
+        gameInterface.addResource(c3);
+
+        c1.addOwner(place, null);
+        c2.addOwner(place, null);
+        c3.addOwner(place, null);
+
+        gameInterface.addAllResources(resourceMapToPuToPlace);
     }
 
     static void continueGame(GameInterface gameInterface){
@@ -806,17 +806,16 @@ class GameCreator {
             } else if (owner instanceof Transport) {
                 Bag bag = (Bag) resourceMap.get(((Transport)owner).getBagUUID());
                 ((Transport)owner).setBag(bag, false);
-            } else if (owner instanceof FireArms) {
-                Cartridges cartridges = (Cartridges) resourceMap.get(((FireArms)owner).getCartridgesUUID());
-                ((FireArms)owner).setCartridges(cartridges, false);
             }
         }
 
         Player player = gameInterface.getPlayer();
 
+        Bag withoutBag = ((Bag)resourceMap.get(player.getWithoutBagUUID()));
+        withoutBag.addOwner(player, Player.WITHOUT_BAG);
         Bag bag = ((Bag)resourceMap.get(player.getCurrentBagUUID()));
         if (bag != null){
-            bag.addOwner(player, null);
+            bag.addOwner(player, Player.WITH_BAG);
         }
         Transport transport = ((Transport)resourceMap.get(player.getCurrentTransportUUID()));
         if (transport != null){

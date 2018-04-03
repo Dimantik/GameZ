@@ -12,4 +12,6 @@ public class GameSettings {
     public static final double SPEND_ONE_MINUTE_ENERGY = 0.1;
 
     public static final int SPEND_MINUTES_FOR_FIND_RESOURCE = 60;
+
+    public static final int QUANTITY_CARDRIDGES_IN_ONE_RESOURCE = 60;
 }

@@ -1,5 +1,7 @@
 package dnt.dimantik.md.gamez.game.logic.clases.location;
 
+import android.util.Log;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -145,6 +147,7 @@ public class Place implements BDInterface, Owner {
         if (!isPossibleToPut(resource, flag)){
             return false;
         }
+        Log.i("TAG", "PUT");
         mResourceList.add(resource);
         mResourceUUIDList.add(resource.getId());
         update();

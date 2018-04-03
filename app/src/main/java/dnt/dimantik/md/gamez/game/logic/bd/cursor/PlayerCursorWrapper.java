@@ -37,6 +37,7 @@ public class PlayerCursorWrapper extends CursorWrapper {
         UUID currentSecondWeapon = Assistant.convertToUUID(getString(getColumnIndex(Cols.CURRENT_WEAPON_SECOND)));
         UUID currentBag = Assistant.convertToUUID(getString(getColumnIndex(Cols.CURRENT_BAG)));
         UUID currentTransport = Assistant.convertToUUID(getString(getColumnIndex(Cols.CURRENT_TRANSPORT)));
+        UUID withoutBag = Assistant.convertToUUID(getString(getColumnIndex(Cols.WITHOUT_BAG)));
 
         Player player = new Player(name);
         player.setUUID(uuid);
@@ -55,6 +56,7 @@ public class PlayerCursorWrapper extends CursorWrapper {
         player.setCurrentTransportUUID(currentTransport);
         player.setCurrentFirstWeaponUUID(currentFirstWeapon);
         player.setCurrentSecondWeaponUUID(currentSecondWeapon);
+        player.setWithoutBagUUID(withoutBag);
 
         return player;
     }

@@ -41,27 +41,24 @@ public class MapInterface {
     // ИНТЕРФЕЙС РАБОТЫ С РЕСУРСАМИ НА ЛОКАЦИЯХ
 
     public void addResourceToCurrentPlace(Resource resource, String flag){
-        resource.deleteOwner();
         if (mGameData.getCurrentPlace().isPossibleToPut(resource, flag)){
-            if (resource instanceof Bag){
+            resource.deleteOwner();
+            if (resource instanceof Bag && ((Bag)resource).getResourceList().size() != 0){
                 Bag bag = (Bag) resource;
                 List<Resource> resourceList = bag.getResourceList();
-                resourceList.add(bag);
                 bag.setResourceUUIDList(new HashSet<UUID>());
                 bag.setResourceList(new LinkedList<Resource>());
                 bag.update();
                 addResourceListToCurrentPlace(resourceList, flag);
-            } else if (resource instanceof Transport){
+            } else if (resource instanceof Transport && ((Transport)resource).getBag().getResourceList().size() != 0){
                 Bag bag = ((Transport) resource).getBag();
                 List<Resource> resourceList = bag.getResourceList();
-                resourceList.add(resource);
                 bag.setResourceUUIDList(new HashSet<UUID>());
                 bag.setResourceList(new LinkedList<Resource>());
                 bag.update();
                 addResourceListToCurrentPlace(resourceList, flag);
-            } else {
-                resource.addOwner(mGameData.getCurrentPlace(), flag);
             }
+            resource.addOwner(mGameData.getCurrentPlace(), flag);
         }
     }
 
@@ -77,12 +74,12 @@ public class MapInterface {
 
     public List<Resource> getFindResourceListInCurrentPlace(){
         List<Resource> resourceList = new LinkedList<>(mGameData.getCurrentPlace().getResourceList());
-        Iterator<Resource> iterator = resourceList.iterator();
-        while (iterator.hasNext()){
-            if (iterator.next() instanceof Transport){
-                iterator.remove();
-            }
-        }
+//        Iterator<Resource> iterator = resourceList.iterator();
+//        while (iterator.hasNext()){
+//            if (iterator.next() instanceof Transport){
+//                iterator.remove();
+//            }
+//        }
         return resourceList;
     }
 

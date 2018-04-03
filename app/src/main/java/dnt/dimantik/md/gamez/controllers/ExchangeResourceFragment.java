@@ -243,12 +243,6 @@ public class ExchangeResourceFragment extends Fragment implements View.OnClickLi
 
         private void setup(){
             mCheckBox = (CheckBox)itemView.findViewById(R.id.to_exchange);
-            mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    exchange();
-                }
-            });
 
             int cardSize = mFirstSetRecyclerView.getWidth();
             cardSize = (cardSize-40)/4;
@@ -263,6 +257,18 @@ public class ExchangeResourceFragment extends Fragment implements View.OnClickLi
             mNumberSet = numberSet;
             ImageView imageView = (ImageView)mView.findViewById(R.id.resource_image);
             Assistant.fillImage(getContext(), imageView, mResource.getAssertDrawable());
+
+            if (mResource instanceof Bag || mResource instanceof Transport){
+                Toast.makeText(getContext(), "INVIS", Toast.LENGTH_SHORT).show();
+                mCheckBox.setVisibility(View.INVISIBLE);
+            } else {
+                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        exchange();
+                    }
+                });
+            }
         }
 
         private void exchange(){

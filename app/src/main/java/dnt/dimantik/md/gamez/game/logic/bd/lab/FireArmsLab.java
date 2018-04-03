@@ -107,7 +107,6 @@ public class FireArmsLab {
         contentValues.put(Cols.IMAGE_NAME, fireArms.getAssertDrawable());
         contentValues.put(Cols.POWER, fireArms.getPower());
         contentValues.put(Cols.TYPE, fireArms.getType().toString());
-        contentValues.put(Cols.CARTRIDGES, Assistant.wrapUUID(fireArms.getCartridgesUUID()));
 
         return contentValues;
     }

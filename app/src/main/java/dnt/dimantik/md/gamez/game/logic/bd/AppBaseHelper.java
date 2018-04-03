@@ -13,7 +13,7 @@ import static dnt.dimantik.md.gamez.game.logic.bd.CreateTablesCommands.*;
 public class AppBaseHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
-    private static final String DATABASE_NAME = "apSp.db";
+    private static final String DATABASE_NAME = "apSd1p.db";
 
     public AppBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);

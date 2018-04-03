@@ -116,6 +116,7 @@ public class PlayerLab {
         contentValues.put(Cols.CURRENT_WEAPON_SECOND, Assistant.wrapUUID(player.getCurrentSecondWeaponUUID()));
         contentValues.put(Cols.CURRENT_TRANSPORT, Assistant.wrapUUID(player.getCurrentTransportUUID()));
         contentValues.put(Cols.CURRENT_BAG, Assistant.wrapUUID(player.getCurrentBagUUID()));
+        contentValues.put(Cols.WITHOUT_BAG, Assistant.wrapUUID(player.getWithoutBagUUID()));
 
 
         return contentValues;

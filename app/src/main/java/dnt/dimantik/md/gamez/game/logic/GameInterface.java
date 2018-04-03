@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.R;
@@ -18,6 +19,7 @@ import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Clothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Drug;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.FeetClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.Food;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.HeadClothes;
 import dnt.dimantik.md.gamez.game.logic.clases.resource.ImportantResource;
@@ -143,31 +145,31 @@ public class GameInterface {
     }
 
     public HeadClothes getPlayerHeadClothes(){
-        return mPlayerInterface.getCurrentHeadClothes();
+        return mPlayerInterface.getPlayerHeadClothes();
     }
 
     public BodyClothes getPlayerBodyClothes(){
-        return mPlayerInterface.getCurrentBodyClothes();
+        return mPlayerInterface.getPlayerBodyClothes();
     }
 
     public LegsClothes getPlayerLegsClothes(){
-        return mPlayerInterface.getCurrentLegsClothes();
+        return mPlayerInterface.getPlayerLegsClothes();
     }
 
     public FeetClothes getPlayerFeetClothes(){
-        return mPlayerInterface.getCurrentFeetClothes();
+        return mPlayerInterface.getPlayerFeetClothes();
     }
 
     public Transport getPlayerTransport(){
-        return mPlayerInterface.getCurrentTransport();
+        return mPlayerInterface.getPlayerTransport();
     }
 
     public Weapon getPlayerFirstWeapon(){
-        return mPlayerInterface.getCurrentFirstWeapon();
+        return mPlayerInterface.getPlayerFirstWeapon();
     }
 
     public Weapon getPlayerSecondWeapon(){
-        return mPlayerInterface.getCurrentSecondWeapon();
+        return mPlayerInterface.getPlayerSecondWeapon();
     }
 
     public void setPlayerEquipment(Clothes clothes){
@@ -207,9 +209,11 @@ public class GameInterface {
     }
 
     public void setPlayerTransport(Transport transport){
-        List<Resource> resourceList = exchangeResourceFromTwoBags(getPlayerTransport().getBag(), transport.getBag());
+        if (getPlayerTransport() != null){
+            List<Resource> resourceList = exchangeResourceFromTwoBags(getPlayerTransport().getBag(), transport.getBag());
+            addResourceListToCurrentPlace(resourceList, null);
+        }
         mPlayerInterface.setCurrentTransport(transport);
-        addResourceListToCurrentPlace(resourceList, null);
     }
 
     public void setPlayerBag(Bag bag){
@@ -218,10 +222,9 @@ public class GameInterface {
         addResourceListToCurrentPlace(resourceList, null);
     }
 
-
-
-
-
+    public int getCartridgesQuantityInPlayerBagForType(FireArms.Type type){
+        return mPlayerInterface.getCartridgesQuantityForSingleType(type);
+    }
 
 
 
@@ -305,7 +308,17 @@ public class GameInterface {
         return mResourceInterface.getResource(uuid);
     }
 
+    public Map<UUID, Resource> getResourceMap(){
+        return mResourceInterface.getResourceMap();
+    }
 
+    public void addResource(Resource resource){
+        mResourceInterface.addResource(resource);
+    }
+
+    public void addAllResources(Map<UUID, Resource> resourceMap){
+        mResourceInterface.addAllResources(resourceMap);
+    }
 
 
     // OTHER INTERFACE

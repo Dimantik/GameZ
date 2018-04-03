@@ -17,6 +17,15 @@ public class ResourceInterface {
         mResourceMap = resourceMap;
     }
 
+    public void addResource(Resource resource){
+        mResourceMap.put(resource.getId(), resource);
+    }
+
+    public void addAllResources(Map<UUID, Resource> resourceMap){
+        mResourceMap.putAll(resourceMap);
+    }
+
+
     public Resource getResource(UUID uuid){
         return mResourceMap.get(uuid);
     }
