@@ -6,7 +6,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.BodyClothesDbSchema.BodyClothesTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.BodyClothes;
 
 /**
  * Created by dimantik on 3/5/18.

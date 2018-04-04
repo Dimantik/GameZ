@@ -1,9 +1,7 @@
 package dnt.dimantik.md.gamez.controllers.character.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -17,20 +15,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.controllers.bag.fragment.BagFragment;
-import dnt.dimantik.md.gamez.controllers.dialogs.ShowBagDialog;
-import dnt.dimantik.md.gamez.controllers.dialogs.ShowClothesDialog;
-import dnt.dimantik.md.gamez.controllers.dialogs.ShowTransportDialog;
-import dnt.dimantik.md.gamez.controllers.dialogs.ShowWeaponDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.Showable;
-import dnt.dimantik.md.gamez.game.logic.AssertResourceName;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.game.settings.AssertResourceName;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 public class CharacterFragment extends Fragment implements View.OnClickListener {
@@ -114,6 +104,7 @@ public class CharacterFragment extends Fragment implements View.OnClickListener 
         super.onCreate(savedInstanceState);
 
         mGameInterface = ((MainActivity) getActivity()).getGameInterface();
+        Toast.makeText(getContext(), "Size ways " + mGameInterface.getWayPlaceList().size() ,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -130,10 +121,12 @@ public class CharacterFragment extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         updateUI();
+        Toast.makeText(getContext(), "PLACE SIZE - " + mGameInterface.getPlaceList().size() + " LOCATION SIZE - " + mGameInterface.getLocationList().size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getContext(), "UPDATE", Toast.LENGTH_SHORT).show();
         updateUI();
     }
 
@@ -205,27 +198,43 @@ public class CharacterFragment extends Fragment implements View.OnClickListener 
     private void fillIcons() {
         if (mGameInterface.getPlayer().getCurrentHeadClothes() != null) {
             Assistant.fillImage(getContext(), mHeadClothesImage, mGameInterface.getPlayerHeadClothes().getAssertDrawable());
+        } else {
+            mHeadClothesImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentBodyClothes() != null) {
             Assistant.fillImage(getContext(), mBodyClothesImage, mGameInterface.getPlayerBodyClothes().getAssertDrawable());
+        } else {
+            mBodyClothesImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentLegsClothes() != null) {
             Assistant.fillImage(getContext(), mLegsClothesImage, mGameInterface.getPlayerLegsClothes().getAssertDrawable());
+        } else {
+            mLegsClothesImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentFeetClothes() != null) {
             Assistant.fillImage(getContext(), mFeetClothesImage, mGameInterface.getPlayerFeetClothes().getAssertDrawable());
+        } else {
+            mFeetClothesImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentFirstWeapon() != null) {
             Assistant.fillImage(getContext(), mFirstWeaponImage, mGameInterface.getPlayerFirstWeapon().getAssertDrawable());
+        } else {
+            mFirstWeaponImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentSecondWeapon() != null) {
             Assistant.fillImage(getContext(), mSecondWeaponImage, mGameInterface.getPlayerSecondWeapon().getAssertDrawable());
+        } else {
+            mSecondWeaponImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentBag() != null) {
             Assistant.fillImage(getContext(), mBagImage, mGameInterface.getPlayerBag().getAssertDrawable());
+        } else {
+            mBagImage.setImageDrawable(null);
         }
         if (mGameInterface.getPlayer().getCurrentTransport() != null) {
             Assistant.fillImage(getContext(), mTransportImage, mGameInterface.getPlayerTransport().getAssertDrawable());
+        } else {
+            mTransportImage.setImageDrawable(null);
         }
         ImageView imageView = (ImageView)mView.findViewById(R.id.power_image);
         Assistant.fillImage(getContext(), imageView, AssertResourceName.POWER);

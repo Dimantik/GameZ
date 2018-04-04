@@ -6,7 +6,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.DrugDbSchema.DrugTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Drug;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Drug;
 
 /**
  * Created by dimantik on 3/5/18.

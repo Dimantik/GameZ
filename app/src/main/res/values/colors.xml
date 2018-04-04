@@ -6,7 +6,7 @@
     <color name="color_bar_background">#c4d3ff</color>
     <color name="color_bar_progress">#398aec</color>
     <color name="color_bar_finish_background">#ff84ff80</color>
-    <color name="color_bar_finish_progress">#ff22d91c</color>
+    <color name="color_progress_bar_vital">#FF009999</color>
     <color name="fill_grey">#FFA9A9A9</color>
     <color name="background">#CC404040</color>
     <color name="black">#000</color>

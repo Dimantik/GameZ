@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +16,8 @@ import java.util.UUID;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Drug;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Food;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.ImportantResource;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Liquid;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Cartridges;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**

@@ -14,18 +14,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.UUID;
-
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.bag.fragment.BagFragment;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowTransportDialog;
 import dnt.dimantik.md.gamez.controllers.character.fragment.CharacterFragment;
 import dnt.dimantik.md.gamez.controllers.place.fragment.ActionFragment;
+import dnt.dimantik.md.gamez.controllers.place.fragment.LocationFragment;
 import dnt.dimantik.md.gamez.controllers.place.fragment.MapFragment;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
 
 public class MainActivity extends AppCompatActivity implements ActionFragment.OnFragmentInteractionListener,
-        ShowTransportDialog.OnFragmentInteractionListener{
+        ShowTransportDialog.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener, LocationFragment.OnFragmentInteractionListener{
 
     private static final String TYPE = "TYPE";
     private static final String NAME = "NAME";
@@ -134,6 +133,22 @@ public class MainActivity extends AppCompatActivity implements ActionFragment.On
     @Override
     public void putExchangeResourceBagTransportBagFragment() {
         Fragment fragment = ExchangeResourceFragment.newInstance(ExchangeResourceFragment.EXCHANGE_PLAYER_BAG_TRANSPORT_BAG);
+        mFM.beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit();
+    }
+
+    @Override
+    public void replaceLocationFragment() {
+        Fragment fragment = LocationFragment.newInstance();
+        mFM.beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit();
+    }
+
+    @Override
+    public void replaceMapFragment() {
+        Fragment fragment = MapFragment.newInstance();
         mFM.beginTransaction()
                 .replace(R.id.content, fragment)
                 .commit();

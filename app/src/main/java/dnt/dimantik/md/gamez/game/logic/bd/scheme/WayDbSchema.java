@@ -12,8 +12,8 @@ public class WayDbSchema {
 
         public static final class Cols {
 
-            public static final String TO_ID = "to_id";
-            public static final String FROM_ID = "from_id";
+            public static final String POINT_ONE_ID = "point_one_id";
+            public static final String POINT_TWO_ID = "point_two_id";
             public static final String TRAVEL_TIME = "travel_time";
 
         }

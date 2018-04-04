@@ -5,17 +5,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.LocationCursorWrapper;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.LocationDbScheme.LocationTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.LocationDbScheme.LocationTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Location;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Location;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Place;
 
 /**
  * Created by dimantik on 3/5/18.
@@ -114,8 +112,8 @@ public class LocationLab {
         contentValues.put(Cols.ASSERT_DRAWABLE_NAME, location.getAssertDrawableName());
 
         String placeIdList = "";
-        for (Place place : location.getPlaceList()){
-            placeIdList += place.getId() + "|";
+        for (Integer i : location.getPlaceIdList()){
+            placeIdList += i + "|";
         }
 
         contentValues.put(Cols.PLACE_ID_LIST, placeIdList);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -15,14 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Transport;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Transport;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**
@@ -82,20 +79,30 @@ public class ShowTransportDialog extends DialogFragment implements Showable {
 
     private void setup(){
         if (mPhase.equals(CURRENT)){
-            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_2_button, null, false);
+            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_4_text_2_button, null, false);
         } else if (mPhase.equals(IN_FIND_RESOURCES)) {
-            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_2_text_1_button, null, false);
+            mView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_show_resource_with_4_text_1_button, null, false);
         }
 
         TextView transportName = (TextView)mView.findViewById(R.id.resource_name);
         TextView firstCharacteristic = (TextView)mView.findViewById(R.id.first_characteristic);
         TextView secondCharacteristic = (TextView)mView.findViewById(R.id.second_characteristic);
+        TextView thirdCharacteristic = (TextView)mView.findViewById(R.id.third_characteristic);
+        TextView fourthCharacteristic = (TextView)mView.findViewById(R.id.fourth_characteristic);
 
         transportName.setText(mTransport.getName());
-        String message = "Мощность:  " + mTransport.getPower();
+
+        String message = "Мощность:  " + (1.0 - mTransport.getPower());
         firstCharacteristic.setText(message);
+
         message = "Защищенность:  " + mTransport.getProtection();
         secondCharacteristic.setText(message);
+
+        message = "Расход топлива:  " + mTransport.getSpendFuel();
+        thirdCharacteristic.setText(message);
+
+        message = "Колличество топлива в баке:  " + mTransport.getFuelQuantity();
+        fourthCharacteristic.setText(message);
 
         ImageView imageView = (ImageView)mView.findViewById(R.id.resource_image);
         Assistant.fillImage(getContext(), imageView, mTransport.getAssertDrawable());

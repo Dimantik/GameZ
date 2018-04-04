@@ -3,20 +3,16 @@ package dnt.dimantik.md.gamez.game.logic.bd.lab;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.PlaceCursorWrapper;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.PlaceDbSchema.PlaceTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.PlaceDbSchema.PlaceTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.Player;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Place;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
 
 /**
  * Created by dimantik on 3/5/18.
@@ -115,6 +111,7 @@ public class PlaceLab {
         contentValues.put(Cols.DANGEROUS_LEVEL, place.getDangerousLevel());
         contentValues.put(Cols.INFO, place.getInfo());
         contentValues.put(Cols.ASSERT_DRAWABLE_NAME, place.getAssertDrawableName());
+        contentValues.put(Cols.PROTECTION, place.getProtection());
 
         String resourceUUIDList = "";
         for (Resource resource : place.getResourceList()){

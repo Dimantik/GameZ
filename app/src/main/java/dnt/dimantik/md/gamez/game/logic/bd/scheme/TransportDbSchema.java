@@ -19,6 +19,7 @@ public class TransportDbSchema {
             public static final String POWER = "power";
             public static final String BAG_UUID = "bag_uuid";
             public static final String FUEL_QUANTITY = "fuel_quantity";
+            public static final String SPEND_FUEL = "spend_fuel";
         }
     }
 }

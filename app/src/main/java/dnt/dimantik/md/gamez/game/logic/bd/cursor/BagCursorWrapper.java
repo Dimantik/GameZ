@@ -6,7 +6,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.BagDbSchema.BagTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Bag;
 
 /**
  * Created by dimantik on 3/5/18.

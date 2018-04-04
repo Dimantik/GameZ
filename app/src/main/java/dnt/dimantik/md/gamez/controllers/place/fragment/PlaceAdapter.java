@@ -1,7 +1,7 @@
 package dnt.dimantik.md.gamez.controllers.place.fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.FileReader;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowPlaceDialogFragment;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Place;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**
@@ -27,14 +26,18 @@ import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder> {
 
+    public static final int REQUEST_SHOW_PLACE = 0;
+
+    private Fragment mFragment;
     private GameInterface mGameInterface;
     private FragmentManager mFM;
     private Context mContext;
 
-    public PlaceAdapter(GameInterface gameInterface, FragmentManager fm, Context context) {
+    public PlaceAdapter(GameInterface gameInterface, FragmentManager fm, Context context, Fragment fragment) {
         mGameInterface = gameInterface;
         mFM = fm;
         mContext = context;
+        mFragment = fragment;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder>
 
     @Override
     public int getItemCount() {
-       return mGameInterface.getPlaceList().size();
+       return mGameInterface.getCurrentLocation().getPlaceList().size();
     }
 
     class PlaceHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -102,6 +105,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder>
             switch (view.getId()){
                 case R.id.go_to_place:
                     dialog = ShowPlaceDialogFragment.getInstance(mPlace.getId(), ShowPlaceDialogFragment.GO_TO_PLACE_ACTION);
+                    dialog.setTargetFragment(mFragment, REQUEST_SHOW_PLACE);
                     dialog.show(mFM, "PLACE");
                     break;
                 case R.id.info_place:

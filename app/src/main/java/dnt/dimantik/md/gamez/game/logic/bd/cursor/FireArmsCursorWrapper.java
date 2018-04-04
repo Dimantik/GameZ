@@ -6,8 +6,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.FireArmsDbSchema.FireArmsTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
-import dnt.dimantik.md.gamez.helper.classes.Assistant;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.FireArms;
 
 /**
  * Created by dimantik on 3/5/18.

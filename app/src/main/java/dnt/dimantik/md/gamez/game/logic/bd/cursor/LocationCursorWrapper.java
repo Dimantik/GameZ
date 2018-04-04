@@ -2,11 +2,12 @@ package dnt.dimantik.md.gamez.game.logic.bd.cursor;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import dnt.dimantik.md.gamez.game.logic.clases.location.Location;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Location;
 
 import static dnt.dimantik.md.gamez.game.logic.bd.scheme.LocationDbScheme.LocationTable.*;
 
@@ -38,8 +39,9 @@ public class LocationCursorWrapper extends CursorWrapper {
             }
         }
 
+        Log.i("N", "ДО " + id + " - " + placeIdList.size());
         Location location = Location.getInstance(id, name, info, assertDrawableName, placeIdList);
-
+        Log.i("N", "ПОСЛЕ " + location.getId() + " - " + location.getPlaceIdList().size());
         return location;
     }
 }

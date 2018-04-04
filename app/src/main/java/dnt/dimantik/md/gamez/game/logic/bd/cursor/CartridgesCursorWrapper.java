@@ -3,11 +3,9 @@ package dnt.dimantik.md.gamez.game.logic.bd.cursor;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import java.util.UUID;
-
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.CartridgesDbSchema.CartridgesTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Cartridges;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.FireArms;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**

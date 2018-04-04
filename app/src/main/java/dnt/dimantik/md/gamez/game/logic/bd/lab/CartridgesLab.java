@@ -4,18 +4,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.CartridgesCursorWrapper;
-import dnt.dimantik.md.gamez.game.logic.bd.scheme.CartridgesDbSchema;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.CartridgesDbSchema.CartridgesTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.CartridgesDbSchema.CartridgesTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
-import dnt.dimantik.md.gamez.helper.classes.Assistant;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Cartridges;
 
 /**
  * Created by dimantik on 3/5/18.

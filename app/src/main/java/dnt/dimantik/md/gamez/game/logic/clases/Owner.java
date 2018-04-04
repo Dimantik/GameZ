@@ -1,6 +1,6 @@
 package dnt.dimantik.md.gamez.game.logic.clases;
 
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
 
 /**
  * Created by dimantik on 27.03.2018.

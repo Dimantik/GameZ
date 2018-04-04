@@ -1,12 +1,10 @@
 package dnt.dimantik.md.gamez.game.logic.bd.lab;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +13,8 @@ import java.util.UUID;
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.BagCursorWrapper;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.BagDbSchema.BagTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.BagDbSchema.BagTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Bag;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
 
 /**
  * Created by dimantik on 3/5/18.

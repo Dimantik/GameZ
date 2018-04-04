@@ -1,6 +1,7 @@
 package dnt.dimantik.md.gamez.controllers.place.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
 
 public class PlaceFragment extends Fragment {
 
@@ -57,9 +58,15 @@ public class PlaceFragment extends Fragment {
         updateUI();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getContext(), "UPDATE", Toast.LENGTH_SHORT).show();
+        updateUI();
+    }
+
     private void updateUI(){
         if (mPlaceAdapter == null){
-            mPlaceAdapter = new PlaceAdapter(mGameInterface, getFragmentManager(), getContext());
+            mPlaceAdapter = new PlaceAdapter(mGameInterface, getFragmentManager(), getContext(), this);
             mRecyclerView.setAdapter(mPlaceAdapter);
         } else {
             mPlaceAdapter.notifyDataSetChanged();

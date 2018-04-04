@@ -1,11 +1,9 @@
 package dnt.dimantik.md.gamez.game.logic.bd.lab;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,7 @@ import java.util.UUID;
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.FeetClothesCursorWrapper;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.FeetClothesDbSchema.FeetClothesTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.FeetClothesDbSchema.FeetClothesTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FeetClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.FeetClothes;
 
 /**
  * Created by dimantik on 3/5/18.

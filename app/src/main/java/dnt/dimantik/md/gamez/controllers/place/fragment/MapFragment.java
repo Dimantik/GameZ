@@ -1,21 +1,26 @@
 package dnt.dimantik.md.gamez.controllers.place.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.GameData;
+import dnt.dimantik.md.gamez.controllers.dialogs.GameOverDialog;
+import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
 
 public class MapFragment extends Fragment {
 
@@ -44,9 +49,25 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_location, container, false);
+        mView = inflater.inflate(R.layout.fragment_map, container, false);
         setup();
+        checkIsDead();
         return mView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        setup();
+        setValues();
+    }
+
+    private void checkIsDead(){
+        String cause = mGameInterface.checkIsDead();
+        if (cause != null){
+            BDHelper.deleteGame();
+            DialogFragment dialogFragment = GameOverDialog.getInstance(cause);
+            dialogFragment.show(getFragmentManager(), "GAME_OVER");
+        }
     }
 
     private void setup(){
@@ -74,6 +95,14 @@ public class MapFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+            }
+        });
+
+        Button changeLocation = (Button)mView.findViewById(R.id.change_location);
+        changeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.replaceLocationFragment();
             }
         });
     }
@@ -106,12 +135,12 @@ public class MapFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //if (context instanceof OnFragmentInteractionListener) {
-        //    mListener = (OnFragmentInteractionListener) context;
-        //} else {
-        //    throw new RuntimeException(context.toString()
-        //            + " must implement OnFragmentInteractionListener");
-        //}
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -121,5 +150,8 @@ public class MapFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
+
+        void replaceLocationFragment();
+
     }
 }

@@ -10,8 +10,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.PlaceDbSchema.PlaceTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Place;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**
@@ -28,6 +28,7 @@ public class PlaceCursorWrapper extends CursorWrapper {
         int id = getInt(getColumnIndex(Cols.ID));
         String name = getString(getColumnIndex(Cols.NAME));
         int dangerousLevel = getInt(getColumnIndex(Cols.DANGEROUS_LEVEL));
+        int protetion = getInt(getColumnIndex(Cols.PROTECTION));
         String info = getString(getColumnIndex(Cols.INFO));
         String resourceIdList = getString(getColumnIndex(Cols.RESOURCE_ID_LIST));
         String resourceTypeList = getString(getColumnIndex(Cols.RESOURCE_TYPE_LIST));
@@ -55,7 +56,7 @@ public class PlaceCursorWrapper extends CursorWrapper {
             }
         }
 
-        Place place = Place.getInstance(id, name, dangerousLevel, info, assertDrawableName, typeList, uuidSet);
+        Place place = Place.getInstance(id, name, dangerousLevel, protetion, info, assertDrawableName, typeList, uuidSet);
 
         return place;
     }

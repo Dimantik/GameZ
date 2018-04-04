@@ -4,16 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.WayCursorWrapper;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.WayDbSchema.WayTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.WayDbSchema.WayTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Way;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Way;
 
 /**
  * Created by dimantik on 3/5/18.
@@ -76,8 +73,8 @@ public class WayLab {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(Cols.TRAVEL_TIME, way.getTravelTime());
-        contentValues.put(Cols.TO_ID, way.getToId());
-        contentValues.put(Cols.FROM_ID, way.getFromId());
+        contentValues.put(Cols.POINT_ONE_ID, way.getPointOneId());
+        contentValues.put(Cols.POINT_TWO_ID, way.getPointTwoId());
 
         return contentValues;
     }

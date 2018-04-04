@@ -1,22 +1,18 @@
 package dnt.dimantik.md.gamez.game.logic.bd.lab;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.cursor.FireArmsCursorWrapper;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
-import dnt.dimantik.md.gamez.helper.classes.Assistant;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.FireArmsDbSchema.FireArmsTable;
 import dnt.dimantik.md.gamez.game.logic.bd.scheme.FireArmsDbSchema.FireArmsTable.Cols;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.FireArms;
 
 /**
  * Created by dimantik on 3/5/18.

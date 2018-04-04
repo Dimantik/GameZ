@@ -27,11 +27,11 @@ public class CreateTablesCommands {
     public static final String SQL_CREATE_TABLE_WAY_COMMAND =
             "CREATE TABLE " + WayDbSchema.WayTable.TABLE_NAME + "(" +
                     " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    WayDbSchema.WayTable.Cols.TO_ID + " INTEGER, " +
-                    WayDbSchema.WayTable.Cols.FROM_ID + " INTEGER, " +
+                    WayDbSchema.WayTable.Cols.POINT_ONE_ID + " INTEGER, " +
+                    WayDbSchema.WayTable.Cols.POINT_TWO_ID + " INTEGER, " +
                     WayDbSchema.WayTable.Cols.TRAVEL_TIME + " INTEGER)";
 
-    public static final String SQL_CREATE_TABLE_GAME_COMMAND =
+    public static final String SQL_CREATE_TABLE_GAME_DATA_COMMAND =
             "CREATE TABLE " + GameDataDbSchema.GameDataTable.TABLE_NAME + "(" +
                     " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     GameDataDbSchema.GameDataTable.Cols.UUID + " TEXT, " +
@@ -129,6 +129,7 @@ public class CreateTablesCommands {
                     PlaceDbSchema.PlaceTable.Cols.ID + " TEXT, " +
                     PlaceDbSchema.PlaceTable.Cols.NAME + " TEXT, " +
                     PlaceDbSchema.PlaceTable.Cols.DANGEROUS_LEVEL + " INTEGER, " +
+                    PlaceDbSchema.PlaceTable.Cols.PROTECTION + " INTEGER, " +
                     PlaceDbSchema.PlaceTable.Cols.INFO + " TEXT, " +
                     PlaceDbSchema.PlaceTable.Cols.RESOURCE_ID_LIST + " TEXT, " +
                     PlaceDbSchema.PlaceTable.Cols.ASSERT_DRAWABLE_NAME + " TEXT, " +
@@ -182,6 +183,7 @@ public class CreateTablesCommands {
                     TransportDbSchema.TransportTable.Cols.PROTECTION + " INTEGER, " +
                     TransportDbSchema.TransportTable.Cols.BAG_UUID + " TEXT, " +
                     TransportDbSchema.TransportTable.Cols.FUEL_QUANTITY + " INTEGER, " +
+                    TransportDbSchema.TransportTable.Cols.SPEND_FUEL + " INTEGER, " +
                     TransportDbSchema.TransportTable.Cols.POWER + " INTEGER)";
 
     public static final String SQL_CREATE_TABLE_TEST =

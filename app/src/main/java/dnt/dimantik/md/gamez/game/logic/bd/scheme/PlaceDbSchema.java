@@ -19,6 +19,7 @@ public class PlaceDbSchema {
             public static final String RESOURCE_ID_LIST = "resource_id_list";
             public static final String RESOURCE_TYPE_LIST = "resource_type_list";
             public static final String ASSERT_DRAWABLE_NAME = "assert_drawable_name";
+            public static final String PROTECTION = "protection";
 
         }
     }

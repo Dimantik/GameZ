@@ -57,4 +57,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         CreateNewPlayerDialogFragment dialogFragment = CreateNewPlayerDialogFragment.getInstance();
         dialogFragment.show(getSupportFragmentManager(), "NEW_PLAYER");
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

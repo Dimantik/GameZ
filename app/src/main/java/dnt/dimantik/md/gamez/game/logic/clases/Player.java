@@ -3,14 +3,14 @@ package dnt.dimantik.md.gamez.game.logic.clases;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.BodyClothes;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FeetClothes;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.HeadClothes;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.LegsClothes;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Transport;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Weapon;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Bag;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.BodyClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.FeetClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.HeadClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.LegsClothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Transport;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Weapon;
 
 /**
  * Created by dimantik on 10/19/17.

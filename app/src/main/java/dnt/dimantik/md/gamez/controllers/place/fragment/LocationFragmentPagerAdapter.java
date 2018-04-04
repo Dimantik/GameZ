@@ -12,7 +12,7 @@ public class LocationFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String[] titles = {
             "Карта местности",
-            "Ваше местоположение"
+            "Действия"
     };
 
     public LocationFragmentPagerAdapter(FragmentManager fm) {

@@ -3,8 +3,8 @@ package dnt.dimantik.md.gamez.game.logic.clases;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.game.logic.bd.BDHelper;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Location;
-import dnt.dimantik.md.gamez.game.logic.clases.location.Place;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Location;
+import dnt.dimantik.md.gamez.game.logic.clases.map.Place;
 
 /**
  * Created by dimantik on 10/20/17.
@@ -38,7 +38,7 @@ public class GameData implements BDInterface {
 
     public void upTime(int minutes){
         mAllMinutes += minutes;
-        mCurrentDay = mAllMinutes/(24*60);
+        mCurrentDay = mAllMinutes/(24*60) + 1;
     }
 
     private void setCorrectlyTime(){

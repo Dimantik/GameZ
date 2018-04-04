@@ -3,30 +3,25 @@ package dnt.dimantik.md.gamez.helper.classes;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import dnt.dimantik.md.gamez.R;
-import dnt.dimantik.md.gamez.controllers.bag.fragment.BagFragment;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowBagDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowCartridgesDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowClothesDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowImportantResourceDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowTransportDialog;
 import dnt.dimantik.md.gamez.controllers.dialogs.ShowWeaponDialog;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Cartridges;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Clothes;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.FireArms;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.ImportantResource;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Resource;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Transport;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Weapon;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Bag;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Cartridges;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Clothes;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.ImportantResource;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Resource;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Transport;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Weapon;
 
 /**
  * Created by dimantik on 1/30/18.

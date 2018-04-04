@@ -3,7 +3,6 @@ package dnt.dimantik.md.gamez.controllers.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -12,16 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 import dnt.dimantik.md.gamez.R;
 import dnt.dimantik.md.gamez.controllers.MainActivity;
-import dnt.dimantik.md.gamez.game.logic.GameInterface;
-import dnt.dimantik.md.gamez.game.logic.clases.resource.Bag;
+import dnt.dimantik.md.gamez.game.logic.interfaces.GameInterface;
+import dnt.dimantik.md.gamez.game.logic.clases.resources.Bag;
 import dnt.dimantik.md.gamez.helper.classes.Assistant;
 
 /**

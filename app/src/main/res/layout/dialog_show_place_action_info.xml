@@ -21,7 +21,7 @@
             android:id="@+id/place_name"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Отправиться в город Z?"
+            tools:text="Отправиться в город Z?"
             android:textColor="#000"
             style="@style/Base.TextAppearance.AppCompat.Body2"
             android:gravity="center"
@@ -56,33 +56,21 @@
                 android:id="@+id/place_dangerous_level_one"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/skull"
                 android:layout_marginLeft="15dp"/>
 
             <ImageView
                 android:id="@+id/place_dangerous_level_two"
-                android:layout_width="15dp"
+                android:layout_width="12dp"
                 android:layout_height="15dp"
-                android:src="@drawable/skull"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp" />
 
             <ImageView
                 android:id="@+id/place_dangerous_level_three"
-                android:layout_width="15dp"
+                android:layout_width="11dp"
                 android:layout_height="15dp"
-                android:src="@drawable/skull"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/travel_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:text="Время в пути: 2 дня"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/place_protection"
@@ -91,14 +79,14 @@
             android:layout_marginLeft="3dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
-            android:text="Неприступность места: 3" />
+            tools:text="Неприступность места: 3" />
 
         <TextView
             android:id="@+id/place_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Раньше это был огромный мегаполис, сейчас это город мертвых."
+            tools:text="Раньше это был огромный мегаполис, сейчас это город мертвых."
             android:textColor="@color/black"
             android:layout_marginTop="10dp"/>
 
@@ -107,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="Прежде чем отправиться, убедитесь что у вас достаточно провизии для переезда."
+            tools:text="Прежде чем отправиться, убедитесь что у вас достаточно провизии для переезда."
             android:textColor="@color/black"
             android:layout_marginTop="10dp"/>
 

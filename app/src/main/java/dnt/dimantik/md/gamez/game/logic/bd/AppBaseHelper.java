@@ -13,7 +13,7 @@ import static dnt.dimantik.md.gamez.game.logic.bd.CreateTablesCommands.*;
 public class AppBaseHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
-    private static final String DATABASE_NAME = "apSd1p.db";
+    private static final String DATABASE_NAME = "game.db";
 
     public AppBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -21,7 +21,7 @@ public class AppBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(SQL_CREATE_TABLE_GAME_COMMAND);
+        sqLiteDatabase.execSQL(SQL_CREATE_TABLE_GAME_DATA_COMMAND);
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_HEAD_CLOTHES_COMMAND);
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_BODY_CLOTHES_COMMAND);
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_LEGS_CLOTHES_COMMAND);
